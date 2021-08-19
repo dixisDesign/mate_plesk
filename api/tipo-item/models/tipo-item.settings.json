@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tipo_items",
+  "info": {
+    "name": "tipoItem"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "tipo": {
+      "type": "string"
+    },
+    "items": {
+      "via": "tipo_item",
+      "collection": "items"
+    },
+    "data": {
+      "type": "json"
+    },
+    "empresa": {
+      "via": "tipo_items",
+      "model": "empresas"
+    }
+  }
+}

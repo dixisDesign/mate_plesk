@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "empresas",
+  "info": {
+    "name": "empresas"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nombre": {
+      "type": "string"
+    },
+    "items": {
+      "collection": "items",
+      "via": "empresa"
+    },
+    "users_permissions_users": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "empresa"
+    },
+    "registries": {
+      "via": "empresa",
+      "collection": "registries"
+    },
+    "statuses": {
+      "collection": "statuses",
+      "via": "empresa"
+    },
+    "tipo_items": {
+      "collection": "tipo-item",
+      "via": "empresa"
+    },
+    "works": {
+      "collection": "works",
+      "via": "empresa"
+    }
+  }
+}

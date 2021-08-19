@@ -14,11 +14,40 @@
     "nombre": {
       "type": "string"
     },
-    "descricion": {
-      "type": "string"
-    },
     "data": {
       "type": "json"
+    },
+    "tipo_item": {
+      "via": "items",
+      "model": "tipo-item"
+    },
+    "status": {
+      "via": "items",
+      "model": "statuses"
+    },
+    "inicio": {
+      "type": "date"
+    },
+    "final": {
+      "type": "date"
+    },
+    "padre": {
+      "model": "items",
+      "via": "items"
+    },
+    "items": {
+      "collection": "items",
+      "via": "padre"
+    },
+    "users_permissions_users": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "items",
+      "dominant": true
+    },
+    "empresa": {
+      "via": "items",
+      "model": "empresas"
     }
   }
 }
