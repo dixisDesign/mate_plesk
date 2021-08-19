@@ -14,7 +14,7 @@
     "nombre": {
       "type": "string"
     },
-    "description": {
+    "descricion": {
       "type": "string"
     },
     "data": {
