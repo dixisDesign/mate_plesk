@@ -18,9 +18,9 @@
       "collection": "items"
     },
     "users_permissions_users": {
+      "via": "empresa",
       "plugin": "users-permissions",
-      "collection": "user",
-      "via": "empresa"
+      "collection": "user"
     },
     "registries": {
       "via": "empresa",

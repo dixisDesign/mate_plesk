@@ -66,6 +66,9 @@
     "empresa": {
       "via": "users_permissions_users",
       "model": "empresas"
+    },
+    "name": {
+      "type": "string"
     }
   }
 }
