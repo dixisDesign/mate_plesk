@@ -75,6 +75,14 @@
     }, 
     {
       "method": "PUT",
+      "path": "/registries/bulk",
+      "handler": "registries.updateBulk",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
       "path": "/items/recursive-item-status",
       "handler": "items.recursiveItemStatus",
       "config": {
