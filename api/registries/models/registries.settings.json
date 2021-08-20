@@ -46,8 +46,8 @@
       "model": "items"
     },
     "work": {
-      "model": "works",
-      "via": "registries"
+      "via": "registries",
+      "model": "works"
     },
     "empresa": {
       "via": "registries",

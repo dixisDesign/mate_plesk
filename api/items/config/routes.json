@@ -72,6 +72,22 @@
       "config": {
         "policies": []
       }
+    }, 
+    {
+      "method": "PUT",
+      "path": "/items/recursive-item-status",
+      "handler": "items.recursiveItemStatus",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/items/assignUsers",
+      "handler": "items.assignUsers",
+      "config": {
+        "policies": []
+      }
     },
     {
       "method": "PUT",

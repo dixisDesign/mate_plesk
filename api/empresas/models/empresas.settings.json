@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "empresas",
   "info": {
-    "name": "empresas"
+    "name": "empresas",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -18,9 +19,9 @@
       "via": "empresa"
     },
     "users_permissions_users": {
+      "via": "empresa",
       "plugin": "users-permissions",
-      "collection": "user",
-      "via": "empresa"
+      "collection": "user"
     },
     "registries": {
       "via": "empresa",
@@ -35,8 +36,11 @@
       "via": "empresa"
     },
     "works": {
-      "collection": "works",
-      "via": "empresa"
+      "via": "empresa",
+      "collection": "works"
+    },
+    "data": {
+      "type": "json"
     }
   }
 }

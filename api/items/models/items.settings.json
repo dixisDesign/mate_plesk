@@ -40,9 +40,9 @@
       "via": "padre"
     },
     "users_permissions_users": {
+      "via": "items",
       "plugin": "users-permissions",
       "collection": "user",
-      "via": "items",
       "dominant": true
     },
     "empresa": {
