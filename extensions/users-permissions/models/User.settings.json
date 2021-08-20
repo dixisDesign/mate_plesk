@@ -67,8 +67,8 @@
       "via": "users_permissions_users",
       "model": "empresas"
     },
-    "data": {
-      "type": "json"
+    "name": {
+      "type": "string"
     }
   }
 }

@@ -15,8 +15,8 @@
       "type": "string"
     },
     "items": {
-      "collection": "items",
-      "via": "empresa"
+      "via": "empresa",
+      "collection": "items"
     },
     "users_permissions_users": {
       "via": "empresa",

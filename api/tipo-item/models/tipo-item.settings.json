@@ -13,16 +13,16 @@
     "tipo": {
       "type": "string"
     },
-    "items": {
-      "via": "tipo_item",
-      "collection": "items"
-    },
     "data": {
       "type": "json"
     },
     "empresa": {
       "via": "tipo_items",
       "model": "empresas"
+    },
+    "items": {
+      "via": "tipo",
+      "collection": "items"
     }
   }
 }

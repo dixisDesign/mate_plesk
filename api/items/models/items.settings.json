@@ -17,9 +17,9 @@
     "data": {
       "type": "json"
     },
-    "tipo_item": {
-      "via": "items",
-      "model": "tipo-item"
+    "tipo": {
+      "model": "tipo-item",
+      "via": "items"
     },
     "status": {
       "via": "items",
