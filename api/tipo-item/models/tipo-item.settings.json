@@ -21,7 +21,7 @@
       "model": "empresas"
     },
     "items": {
-      "via": "t",
+      "via": "tipo",
       "collection": "items"
     }
   }
