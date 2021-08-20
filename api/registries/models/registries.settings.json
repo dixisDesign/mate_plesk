@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "registries",
+  "info": {
+    "name": "registries",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "observaciones": {
+      "type": "string"
+    },
+    "data": {
+      "type": "json"
+    },
+    "inicio": {
+      "type": "datetime"
+    },
+    "final": {
+      "type": "datetime"
+    },
+    "media": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "validado": {
+      "type": "enumeration",
+      "enum": [
+        "Registrado",
+        "Supervisado"
+      ]
+    },
+    "item": {
+      "model": "items"
+    },
+    "work": {
+      "model": "works",
+      "via": "registries"
+    },
+    "empresa": {
+      "via": "registries",
+      "model": "empresas"
+    },
+    "users_permissions_user": {
+      "plugin": "users-permissions",
+      "model": "user"
+    }
+  }
+}

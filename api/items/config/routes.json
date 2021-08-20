@@ -2,6 +2,47 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/items/get-ascendancy/:id",
+      "handler": "items.ascendancy",
+      "config": {
+        "policies": []
+      }
+    },
+
+    {
+      "method": "GET",
+      "path": "/items/get-all-childs/:id",
+      "handler": "items.getAllChilds",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/items/order",
+      "handler": "items.findOrder",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/items/thread/:id",
+      "handler": "items.findThread",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/items/usertree/:id",
+      "handler": "items.getItemByUserIdTree",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/items",
       "handler": "items.find",
       "config": {

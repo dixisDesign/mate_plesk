@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "statuses",
+  "info": {
+    "name": "statuses"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "valor": {
+      "type": "string"
+    },
+    "items": {
+      "via": "status",
+      "collection": "items"
+    },
+    "empresa": {
+      "via": "statuses",
+      "model": "empresas"
+    }
+  }
+}
