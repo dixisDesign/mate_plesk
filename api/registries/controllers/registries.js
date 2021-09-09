@@ -30,5 +30,16 @@ module.exports = {
        console.log('supervisor');
        return users
       },
+    async haveRegistries(ctx){
+        let ids = JSON.parse(ctx.params.ids)
+        let counted = 0
+        await  Promise.all(
+            ids.map(async (id) =>{
+                const que = await strapi.services.registries.count({item:id})
+                counted = counted + parseInt(que)
+            })
+        )
+        return counted
+    }
       
 };

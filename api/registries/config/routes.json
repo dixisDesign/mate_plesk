@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/registries/have-registries/:ids",
+      "handler": "registries.haveRegistries",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/registries",
       "handler": "registries.find",
       "config": {

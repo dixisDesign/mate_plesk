@@ -79,8 +79,10 @@ module.exports = {
       sanitizeEntity(entity, { model: strapi.models.items })
     );
   },
-  async ascendancy(ctx){
-    let entities =[];
+
+
+  async ascendancy(ctx) {
+    let entities = [];
     let id = ctx.params.id;
     entities.push(parseInt(id));
     while (id != null) {
@@ -104,7 +106,6 @@ module.exports = {
         entities.push(id);
       }
     }
-
     return entities;
   },
 
@@ -139,20 +140,9 @@ module.exports = {
     }
     await items.forEach((item) => {
       entity = strapi.services.items.update({ id: item }, users);
-      //entities.push(entity)
     });
 
     return entity;
-    /*     let items = ctx.request.body.items
-        //obtengo los objetos usuarios que se actualizaran
-        let users = { 'users_permission_users': ctx.request.body.users }
-        let aItem=[]
-        await  Promise.all(items.map(async (itemId)=>{
-            const item = await strapi.services.items.update({ id: itemId }, users)
-            aItem.push(item)
-        
-        }))
-        return aItem */
   },
   async recursiveItemStatus(ctx) {
     let items = ctx.request.body.items;
@@ -174,7 +164,7 @@ module.exports = {
     let myMap = {};
     let tree = [];
     if (entities.length > 0) {
-      console.log('Hay entidades');
+      console.log("Hay entidades");
       entities.forEach((ent) => {
         myMap[ent.id] = ent;
       });
@@ -191,8 +181,8 @@ module.exports = {
         sanitizeEntity(entity, { model: strapi.models.items })
       );
     }
-    console.log('no hay entidades');
+    console.log("no hay entidades");
 
-    return []
+    return [];
   },
 };
