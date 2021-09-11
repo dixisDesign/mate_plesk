@@ -166,12 +166,9 @@ module.exports = {
     let entities = [];
     let entity;
     if (ctx.request.body.users.length > 0) {
-      console.log('mayor que cero');
-      users["status"] = {id:1};
+      users["status"] = 2;
     } else {
-      console.log('menor que cero');
-
-      users["status"] = {id:2};
+      users["status"] = 1;
     }
     let aItem = [];
     await Promise.all(
