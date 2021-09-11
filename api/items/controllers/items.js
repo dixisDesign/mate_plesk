@@ -167,16 +167,12 @@ module.exports = {
     let entity;
     if (ctx.request.body.users.length > 0) {
       console.log('mayor que cero');
-      users["status"] = {id:2};
+      users["status"] = {id:1};
     } else {
       console.log('menor que cero');
 
-      users["status"] = {id:1};
+      users["status"] = {id:2};
     }
-    console.log(users);
-    /* await items.forEach((item) => {
-      entity = strapi.services.items.update({ id: item }, {users});
-    }); */
     let aItem = [];
     await Promise.all(
       items.map(async (itema) => {
