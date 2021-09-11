@@ -166,16 +166,27 @@ module.exports = {
     let entities = [];
     let entity;
     if (ctx.request.body.users.length > 0) {
-      users["status"] = 2;
+      console.log('mayor que cero');
+      users["status"] = {id:2};
     } else {
-      users["status"] = 1;
-    }
-    await items.forEach((item) => {
-      entity = strapi.services.items.update({ id: item }, users);
-    });
+      console.log('menor que cero');
 
-    return entity;
+      users["status"] = {id:1};
+    }
+    console.log(users);
+    /* await items.forEach((item) => {
+      entity = strapi.services.items.update({ id: item }, {users});
+    }); */
+    let aItem = [];
+    await Promise.all(
+      items.map(async (itema) => {
+        const item = await strapi.services.items.update({ id: itema}, users);
+        aItem.push(item);
+      })
+    );
+    return aItem;
   },
+
   async recursiveItemStatus(ctx) {
     let items = ctx.request.body.items;
     let body = { status: ctx.request.body };
