@@ -27,6 +27,14 @@
     },
     {
       "method": "GET",
+      "path": "/items/order/:id",
+      "handler": "items.findOrderId",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/items/thread/:id",
       "handler": "items.findThread",
       "config": {

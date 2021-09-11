@@ -43,6 +43,38 @@ module.exports = {
     );
   },
 
+  async findOrderId(ctx) {
+    let entities;
+    let id = ctx.params.id
+    console.log(id);
+    if (ctx.query._q) {
+      entities = await strapi.services.items.search(ctx.query);
+    } else {
+      entities = await strapi.services.items.find({status: id});
+    }
+    console.log(ctx);
+    let myMap = {};
+    let tree = [];
+    entities.forEach((ent) => {
+      myMap[ent.id] = ent;
+    });
+    entities.forEach((item) => {
+      item.items = [];
+      if (item.padre == null) {
+        tree.push(item);
+      } else {
+        if(typeof myMap[item.padre.id] === 'object'){
+          myMap[item.padre.id].items.push(item);
+        }
+
+      }
+    });
+
+    return tree.map((entity) =>
+      sanitizeEntity(entity, { model: strapi.models.items })
+    );
+  },
+
   async findThread(ctx) {
     let myMap = {};
     let tree = [];
