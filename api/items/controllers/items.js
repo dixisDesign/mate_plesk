@@ -15,13 +15,32 @@ module.exports = {
    *
    * @return {Array}
    */
-
+  
   async findOrder(ctx) {
+    let colums = [
+      'id',
+      'nombre',
+      'description',
+      'data',
+      'tipo_item',
+      'status',
+      'inicio',
+      'final',
+      'padre',
+      'empresa',
+      'tipo',
+      't',
+      'items',
+      'users_permissions_users'
+
+    ]
     let entities;
     if (ctx.query._q) {
-      entities = await strapi.services.items.search(ctx.query);
+      entities = await strapi.services.items.search(ctx.query).model.fetchAll({
+        colums: colums
+      });
     } else {
-      entities = await strapi.services.items.find(ctx.query);
+      entities = await strapi.services.items.find(ctx.query)
     }
     console.log(ctx);
     let myMap = {};
@@ -37,7 +56,7 @@ module.exports = {
         myMap[item.padre.id].items.push(item);
       }
     });
-
+    
     return tree.map((entity) =>
       sanitizeEntity(entity, { model: strapi.models.items })
     );
