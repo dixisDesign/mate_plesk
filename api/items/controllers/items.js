@@ -125,10 +125,6 @@ timeFormat(time){
         tree.push(item);
       } else {
         myMap[item.padre.id].items.push(item);
-        myMap[item.padre.id].lapse.hours += item.lapse.hours
-        myMap[item.padre.id].lapse.days += item.lapse.days
-        myMap[item.padre.id].lapse.seconds += item.lapse.seconds
-        myMap[item.padre.id].lapse.minutes += item.lapse.minutes
       }
     });
     
