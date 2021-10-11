@@ -17,7 +17,6 @@ module.exports = {
    */
   async lapseItem(item){
     let registries = await strapi.services.registries.find({item:item.id})
-    
     let byWork ={}
     let byUser ={}
     let byItem ={}
@@ -58,7 +57,17 @@ module.exports = {
         )
     return {"byWork":byWork,"byUser":byUser, "byItem":byItem, "registries":registries}
 },
+/* async totalLapseItem(item){
+  let items = this.rchild(item.id)
+  await Promise.all(
+    items.map(async (item) => {
+      let registries = await strapi.services.registries.find({item:item.id})
+      
+    })
+  );
 
+
+}, */
 /**
  * PRIVATE FUNCTIONS
  */
@@ -104,26 +113,22 @@ timeFormat(time){
     
     let myMap = {};
     let tree = [];
-    /* entities.forEach((ent) => {
-      myMap[ent.id] = ent;
-    }); */
     await Promise.all(
       entities.map(async (ent) => {
         ent.lapse = await this.lapseItem(ent)
         myMap[ent.id] = ent;
       })
     );
-
-
-
-
-
     entities.forEach((item) => {
       item.items = [];
       if (item.padre == null) {
         tree.push(item);
       } else {
         myMap[item.padre.id].items.push(item);
+        myMap[item.padre.id].lapse.hours += item.lapse.hours
+        myMap[item.padre.id].lapse.days += item.lapse.days
+        myMap[item.padre.id].lapse.seconds += item.lapse.seconds
+        myMap[item.padre.id].lapse.minutes += item.lapse.minutes
       }
     });
     
