@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/registries/lapse",
+      "handler": "registries.lapse",
+      "config": { 
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/registries/supervisor",
       "handler": "registries.supervisor",
       "config": {
