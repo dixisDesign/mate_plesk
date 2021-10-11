@@ -15,107 +15,131 @@ module.exports = {
    *
    * @return {Array}
    */
-  async lapseItem(item){
-    let registries = await strapi.services.registries.find({item:item.id})
-    let byWork ={}
-    let byUser ={}
-    let byItem ={}
-    registries.forEach(reg=>{
-        reg['lapse']= this.registryTime(reg)
-        if(!byWork[reg.work.name]){
-            byWork[reg.work.name] = {"registries":[], "lapse":{"seconds":0, "minutes":0,"days":0,"hours":0}}
-        }
-        byWork[reg.work.name].registries.push(reg)
-        byWork[reg.work.name].lapse.seconds += reg.lapse.seconds
-        byWork[reg.work.name].lapse.minutes += reg.lapse.minutes 
-        byWork[reg.work.name].lapse.hours += reg.lapse.hours 
-        byWork[reg.work.name].lapse.days += reg.lapse.days 
+  async lapseItem(item) {
+    let registries = await strapi.services.registries.find({ item: item.id });
+    let byWork = {};
+    let byUser = {};
+    let byItem = {};
+    registries.forEach((reg) => {
+      reg["lapse"] = this.registryTime(reg);
+      if (!byWork[reg.work.name]) {
+        byWork[reg.work.name] = {
+          registries: [],
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+        };
+      }
+      byWork[reg.work.name].registries.push(reg);
+      byWork[reg.work.name].lapse.seconds += reg.lapse.seconds;
+      byWork[reg.work.name].lapse.minutes += reg.lapse.minutes;
+      byWork[reg.work.name].lapse.hours += reg.lapse.hours;
+      byWork[reg.work.name].lapse.days += reg.lapse.days;
 
-        if (reg.users_permissions_user == null) {
-            return
-        }
+      if (reg.users_permissions_user == null) {
+        return;
+      }
 
-        if(!byUser[reg.users_permissions_user.id]){
-            byUser[reg.users_permissions_user.id]={"registries":[],"users_permissions_user":reg.users_permissions_user, "lapse":{"seconds":0, "minutes":0,"days":0,"hours":0}}
-        }
-        byUser[reg.users_permissions_user.id].registries.push(reg)
-        byUser[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds
-        byUser[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes
-        byUser[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours
-        byUser[reg.users_permissions_user.id].lapse.days += reg.lapse.days
+      if (!byUser[reg.users_permissions_user.id]) {
+        byUser[reg.users_permissions_user.id] = {
+          registries: [],
+          users_permissions_user: reg.users_permissions_user,
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+        };
+      }
+      byUser[reg.users_permissions_user.id].registries.push(reg);
+      byUser[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds;
+      byUser[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes;
+      byUser[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours;
+      byUser[reg.users_permissions_user.id].lapse.days += reg.lapse.days;
 
+      if (!byItem[reg.item.id]) {
+        byItem[reg.item.id] = {
+          registries: [],
+          item: reg.item,
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+        };
+      }
+      byItem[reg.item.id].registries.push(reg);
+      byItem[reg.item.id].lapse.seconds += reg.lapse.seconds;
+      byItem[reg.item.id].lapse.minutes += reg.lapse.minutes;
+      byItem[reg.item.id].lapse.hours += reg.lapse.hours;
+      byItem[reg.item.id].lapse.days += reg.lapse.days;
+    });
+    return {
+      byWork: byWork,
+      byUser: byUser,
+      byItem: byItem,
+      registries: registries,
+    };
+  },
 
-        if (!byItem[reg.item.id]) {
-            byItem[reg.item.id]={"registries":[],"item":reg.item, "lapse":{"seconds":0, "minutes":0,"days":0,"hours":0}}
-        }
-        byItem[reg.item.id].registries.push(reg)
-        byItem[reg.item.id].lapse.seconds += reg.lapse.seconds
-        byItem[reg.item.id].lapse.minutes += reg.lapse.minutes
-        byItem[reg.item.id].lapse.hours += reg.lapse.hours
-        byItem[reg.item.id].lapse.days += reg.lapse.days
-    }
-        )
-    return {"byWork":byWork,"byUser":byUser, "byItem":byItem, "registries":registries}
-},
-/* async totalLapseItem(item){
-  let items = this.rchild(item.id)
-  await Promise.all(
-    items.map(async (item) => {
-      let registries = await strapi.services.registries.find({item:item.id})
-      
-    })
-  );
+  async totalLapseItem(item) {
+    let items = await this.rchild(item.id);
 
+    let totalLapse=[]
+    await Promise.all(
+      items.map(async (it) => {
+        console.log(it);
+        let registries = await strapi.services.registries.find({ item: it });
+        registries.forEach((element) => {
+          let time =
+            new Date(element.final).getTime() -
+            new Date(element.inicio).getTime();
+          totalLapse.push(time);
+        });
+      })
+    );
+    console.log(totalLapse);
+    return this.timeFormat(totalLapse.reduce((a, b) => a + b, 0));
+  },
 
-}, */
-/**
- * PRIVATE FUNCTIONS
- */
-registryTime(reg){
-    let time = (new Date(reg.final)).getTime() - (new Date(reg.inicio)).getTime()
-    
-    return this.timeFormat(time)
-},
-timeFormat(time){
-    let seconds = time / 1000
-    let minutes = seconds / 60
-    let hours = minutes / 60
-    let days = hours / 24 
-    const timer = {days,hours,minutes,seconds}
-    return timer
-},
+  /**
+   * PRIVATE FUNCTIONS
+   */
+  registryTime(reg) {
+    let time = new Date(reg.final).getTime() - new Date(reg.inicio).getTime();
+
+    return this.timeFormat(time);
+  },
+  timeFormat(time) {
+    let seconds = time / 1000;
+    let minutes = seconds / 60;
+    let hours = minutes / 60;
+    let days = hours / 24;
+    const timer = { days, hours, minutes, seconds };
+    return timer;
+  },
   async findOrder(ctx) {
     let colums = [
-      'id',
-      'nombre',
-      'description',
-      'data',
-      'tipo_item',
-      'status',
-      'inicio',
-      'final',
-      'padre',
-      'empresa',
-      'tipo',
-      't',
-      'items',
-      'users_permissions_users'
-
-    ]
+      "id",
+      "nombre",
+      "description",
+      "data",
+      "tipo_item",
+      "status",
+      "inicio",
+      "final",
+      "padre",
+      "empresa",
+      "tipo",
+      "t",
+      "items",
+      "users_permissions_users",
+    ];
     let entities;
     if (ctx.query._q) {
       entities = await strapi.services.items.search(ctx.query).model.fetchAll({
-        colums: colums
+        colums: colums,
       });
     } else {
-      entities = await strapi.services.items.find(ctx.query)
+      entities = await strapi.services.items.find(ctx.query);
     }
-    
+
     let myMap = {};
     let tree = [];
     await Promise.all(
       entities.map(async (ent) => {
-        ent.lapse = await this.lapseItem(ent)
+        ent.lapse = await this.lapseItem(ent);
+        ent.totalLapse = await this.totalLapseItem(ent);
         myMap[ent.id] = ent;
       })
     );
@@ -127,7 +151,7 @@ timeFormat(time){
         myMap[item.padre.id].items.push(item);
       }
     });
-    
+
     return tree.map((entity) =>
       sanitizeEntity(entity, { model: strapi.models.items })
     );
@@ -135,12 +159,12 @@ timeFormat(time){
 
   async findOrderId(ctx) {
     let entities;
-    let id = ctx.params.id
+    let id = ctx.params.id;
     console.log(id);
     if (ctx.query._q) {
       entities = await strapi.services.items.search(ctx.query);
     } else {
-      entities = await strapi.services.items.find({status: id});
+      entities = await strapi.services.items.find({ status: id });
     }
     console.log(ctx);
     let myMap = {};
@@ -153,10 +177,9 @@ timeFormat(time){
       if (item.padre == null) {
         tree.push(item);
       } else {
-        if(typeof myMap[item.padre.id] === 'object'){
+        if (typeof myMap[item.padre.id] === "object") {
           myMap[item.padre.id].items.push(item);
         }
-
       }
     });
 
@@ -201,7 +224,6 @@ timeFormat(time){
       sanitizeEntity(entity, { model: strapi.models.items })
     );
   },
-
 
   async ascendancy(ctx) {
     let entities = [];
@@ -263,7 +285,7 @@ timeFormat(time){
     let aItem = [];
     await Promise.all(
       items.map(async (itema) => {
-        const item = await strapi.services.items.update({ id: itema}, users);
+        const item = await strapi.services.items.update({ id: itema }, users);
         aItem.push(item);
       })
     );
