@@ -15,7 +15,66 @@ module.exports = {
    *
    * @return {Array}
    */
-  
+  async lapseItem(item){
+    let registries = await strapi.services.registries.find({item:item.id})
+    
+    let byWork ={}
+    let byUser ={}
+    let byItem ={}
+    registries.forEach(reg=>{
+        reg['lapse']= this.registryTime(reg)
+        if(!byWork[reg.work.name]){
+            byWork[reg.work.name] = {"registries":[], "lapse":{"seconds":0, "minutes":0,"days":0,"hours":0}}
+        }
+        byWork[reg.work.name].registries.push(reg)
+        byWork[reg.work.name].lapse.seconds += reg.lapse.seconds
+        byWork[reg.work.name].lapse.minutes += reg.lapse.minutes 
+        byWork[reg.work.name].lapse.hours += reg.lapse.hours 
+        byWork[reg.work.name].lapse.days += reg.lapse.days 
+
+        if (reg.users_permissions_user == null) {
+            return
+        }
+
+        if(!byUser[reg.users_permissions_user.id]){
+            byUser[reg.users_permissions_user.id]={"registries":[],"users_permissions_user":reg.users_permissions_user, "lapse":{"seconds":0, "minutes":0,"days":0,"hours":0}}
+        }
+        byUser[reg.users_permissions_user.id].registries.push(reg)
+        byUser[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds
+        byUser[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes
+        byUser[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours
+        byUser[reg.users_permissions_user.id].lapse.days += reg.lapse.days
+
+
+        if (!byItem[reg.item.id]) {
+            byItem[reg.item.id]={"registries":[],"item":reg.item, "lapse":{"seconds":0, "minutes":0,"days":0,"hours":0}}
+        }
+        byItem[reg.item.id].registries.push(reg)
+        byItem[reg.item.id].lapse.seconds += reg.lapse.seconds
+        byItem[reg.item.id].lapse.minutes += reg.lapse.minutes
+        byItem[reg.item.id].lapse.hours += reg.lapse.hours
+        byItem[reg.item.id].lapse.days += reg.lapse.days
+    }
+        )
+    return {"byWork":byWork,"byUser":byUser, "byItem":byItem, "registries":registries}
+},
+
+/**
+ * PRIVATE FUNCTIONS
+ */
+registryTime(reg){
+    let time = (new Date(reg.final)).getTime() - (new Date(reg.inicio)).getTime()
+    
+    return this.timeFormat(time)
+},
+timeFormat(time){
+    let seconds = time / 1000
+    let minutes = seconds / 60
+    let hours = minutes / 60
+    let days = hours / 24 
+    const timer = {days,hours,minutes,seconds}
+    return timer
+},
   async findOrder(ctx) {
     let colums = [
       'id',
@@ -42,12 +101,23 @@ module.exports = {
     } else {
       entities = await strapi.services.items.find(ctx.query)
     }
-    console.log(ctx);
+    
     let myMap = {};
     let tree = [];
-    entities.forEach((ent) => {
+    /* entities.forEach((ent) => {
       myMap[ent.id] = ent;
-    });
+    }); */
+    await Promise.all(
+      entities.map(async (ent) => {
+        ent.lapse = await this.lapseItem(ent)
+        myMap[ent.id] = ent;
+      })
+    );
+
+
+
+
+
     entities.forEach((item) => {
       item.items = [];
       if (item.padre == null) {

@@ -48,11 +48,9 @@ module.exports = {
         let byItem ={}
         registries.forEach(reg=>{
             reg['lapse']= this.registryTime(reg)
-           
             if(!byWork[reg.work.name]){
                 byWork[reg.work.name] = {"registries":[], "lapse":{"seconds":0, "minutes":0,"days":0,"hours":0}}
             }
-
             byWork[reg.work.name].registries.push(reg)
             byWork[reg.work.name].lapse.seconds += reg.lapse.seconds
             byWork[reg.work.name].lapse.minutes += reg.lapse.minutes 
