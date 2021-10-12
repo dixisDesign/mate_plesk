@@ -304,6 +304,7 @@ module.exports = {
     );
     return aItem;
   },
+  
   async getItemByUserIdTree(ctx) {
     let userId = ctx.params.id;
     console.log(ctx.request.url);
@@ -321,7 +322,11 @@ module.exports = {
         if (item.padre == null) {
           tree.push(item);
         } else {
-          myMap[item.padre.id].items.push(item);
+          if(myMap[item.padre.id]){
+            myMap[item.padre.id].items.push(item);
+          }
+
+
         }
       });
 
@@ -332,5 +337,6 @@ module.exports = {
     console.log("no hay entidades");
 
     return [];
+    
   },
 };
