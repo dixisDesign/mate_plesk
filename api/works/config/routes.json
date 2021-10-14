@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/works-order",
+      "handler": "works.worksOrder",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/works",
       "handler": "works.find",
       "config": {

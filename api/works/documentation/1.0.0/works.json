@@ -1,5 +1,62 @@
 {
   "paths": {
+    "/works-order": {
+      "get": {
+        "deprecated": false,
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Works"
+        ],
+        "parameters": []
+      }
+    },
     "/works": {
       "get": {
         "deprecated": false,
@@ -634,6 +691,9 @@
               "data": {
                 "type": "object"
               },
+              "status": {
+                "type": "boolean"
+              },
               "published_at": {
                 "type": "string"
               },
@@ -647,6 +707,105 @@
           },
           "data": {
             "type": "object"
+          },
+          "father": {
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "registries": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "empresa": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object"
+              },
+              "father": {
+                "type": "string"
+              },
+              "childs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "status": {
+                "type": "boolean"
+              },
+              "published_at": {
+                "type": "string"
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
+          },
+          "childs": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "registries": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "empresa": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object"
+                },
+                "father": {
+                  "type": "string"
+                },
+                "childs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "boolean"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "status": {
+            "type": "boolean",
+            "default": true
           },
           "published_at": {
             "type": "string",
@@ -670,6 +829,19 @@
           },
           "data": {
             "type": "object"
+          },
+          "father": {
+            "type": "string"
+          },
+          "childs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "boolean",
+            "default": true
           },
           "published_at": {
             "type": "string",

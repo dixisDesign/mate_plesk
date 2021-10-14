@@ -591,6 +591,9 @@
               "data": {
                 "type": "object"
               },
+              "status": {
+                "type": "boolean"
+              },
               "published_at": {
                 "type": "string"
               },

@@ -41,6 +41,9 @@
     },
     "data": {
       "type": "json"
+    },
+    "status": {
+      "type": "boolean"
     }
   }
 }

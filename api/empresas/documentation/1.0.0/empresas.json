@@ -801,6 +801,18 @@
                 "data": {
                   "type": "object"
                 },
+                "father": {
+                  "type": "string"
+                },
+                "childs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "boolean"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -815,6 +827,9 @@
           },
           "data": {
             "type": "object"
+          },
+          "status": {
+            "type": "boolean"
           },
           "published_at": {
             "type": "string",
@@ -865,6 +880,9 @@
           },
           "data": {
             "type": "object"
+          },
+          "status": {
+            "type": "boolean"
           },
           "published_at": {
             "type": "string",
