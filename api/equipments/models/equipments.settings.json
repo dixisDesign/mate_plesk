@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "equipments",
+  "info": {
+    "name": "equipments"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "boolean"
+    },
+    "works": {
+      "collection": "works",
+      "via": "equipment",
+      "dominant": true
+    },
+    "data": {
+      "type": "json"
+    }
+  }
+}
