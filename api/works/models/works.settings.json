@@ -41,6 +41,10 @@
     "status": {
       "type": "boolean",
       "default": true
+    },
+    "equipment": {
+      "via": "works",
+      "collection": "equipments"
     }
   }
 }

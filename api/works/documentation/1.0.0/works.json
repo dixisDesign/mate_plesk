@@ -743,6 +743,12 @@
               "status": {
                 "type": "boolean"
               },
+              "equipment": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "published_at": {
                 "type": "string"
               },
@@ -791,6 +797,12 @@
                 "status": {
                   "type": "boolean"
                 },
+                "equipment": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -806,6 +818,43 @@
           "status": {
             "type": "boolean",
             "default": true
+          },
+          "equipment": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "boolean"
+                },
+                "works": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "data": {
+                  "type": "object"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "published_at": {
             "type": "string",
@@ -842,6 +891,12 @@
           "status": {
             "type": "boolean",
             "default": true
+          },
+          "equipment": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "published_at": {
             "type": "string",

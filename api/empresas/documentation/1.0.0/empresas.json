@@ -813,6 +813,12 @@
                 "status": {
                   "type": "boolean"
                 },
+                "equipment": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
                 "published_at": {
                   "type": "string"
                 },
