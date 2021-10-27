@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/registries/dated",
+      "handler": "registries.byDate",
+      "config": { 
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/registries/lapse",
       "handler": "registries.lapse",
       "config": { 
