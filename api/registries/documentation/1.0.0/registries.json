@@ -1012,6 +1012,12 @@
               "status": {
                 "type": "boolean"
               },
+              "imagen": {
+                "type": "string"
+              },
+              "evaluation": {
+                "type": "object"
+              },
               "published_at": {
                 "type": "string"
               },
