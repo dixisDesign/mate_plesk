@@ -1012,12 +1012,6 @@
               "status": {
                 "type": "boolean"
               },
-              "imagen": {
-                "type": "string"
-              },
-              "evaluation": {
-                "type": "object"
-              },
               "published_at": {
                 "type": "string"
               },
@@ -1080,6 +1074,12 @@
               },
               "data": {
                 "type": "object"
+              },
+              "evaluation": {
+                "type": "object"
+              },
+              "imagen": {
+                "type": "string"
               },
               "created_by": {
                 "type": "string"
