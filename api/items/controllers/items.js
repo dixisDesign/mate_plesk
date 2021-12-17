@@ -26,23 +26,39 @@ module.exports = {
         byWork[reg.work.name] = {
           registries: [],
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+          users:{}
         };
+        
       }
       byWork[reg.work.name].registries.push(reg);
       byWork[reg.work.name].lapse.seconds += reg.lapse.seconds;
       byWork[reg.work.name].lapse.minutes += reg.lapse.minutes;
       byWork[reg.work.name].lapse.hours += reg.lapse.hours;
       byWork[reg.work.name].lapse.days += reg.lapse.days;
-
+     
       if (reg.users_permissions_user == null) {
         return;
       }
+
+      if (!byWork[reg.work.name].users[reg.users_permissions_user.id]) {
+        byWork[reg.work.name].users[reg.users_permissions_user.id] = {
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+          users_permissions_user:reg.users_permissions_user
+        };
+      }
+      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds;
+      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes;
+      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours;
+      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.days += reg.lapse.days;
+
+     
 
       if (!byUser[reg.users_permissions_user.id]) {
         byUser[reg.users_permissions_user.id] = {
           registries: [],
           users_permissions_user: reg.users_permissions_user,
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+          works:{}
         };
       }
       byUser[reg.users_permissions_user.id].registries.push(reg);
@@ -50,6 +66,19 @@ module.exports = {
       byUser[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes;
       byUser[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours;
       byUser[reg.users_permissions_user.id].lapse.days += reg.lapse.days;
+
+      if (!byUser[reg.users_permissions_user.id].works[reg.work.name]) {
+        byUser[reg.users_permissions_user.id].works[reg.work.name] = {
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+          work:reg.work
+        }
+      }
+      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.seconds += reg.lapse.seconds;
+      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.minutes += reg.lapse.minutes;
+      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.hours += reg.lapse.hours;
+      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.days += reg.lapse.days;
+
+
 
       if (!byItem[reg.item.id]) {
         byItem[reg.item.id] = {

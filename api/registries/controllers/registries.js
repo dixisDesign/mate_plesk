@@ -6,6 +6,7 @@
  */
 
 module.exports = {
+
   async updateBulk(ctx) {
     let body = ctx.request.body;
     let response = [];
@@ -22,6 +23,9 @@ module.exports = {
 
     return response;
   },
+  /** registries/supervisor endpoint 
+   * return registries that are not supervised.
+  */
   async supervisor(ctx) {
     let users = await strapi.query("user", "users-permissions").find();
     let registries;
@@ -39,6 +43,9 @@ module.exports = {
     console.log("supervisor");
     return users;
   },
+  /** /registries/have-registries/:ids endpoint
+   *  return count of registries that have the id of item
+  */
   async haveRegistries(ctx) {
     let ids = JSON.parse(ctx.params.ids);
     let counted = 0;
@@ -50,6 +57,9 @@ module.exports = {
     );
     return counted;
   },
+  /** registries/lapse endpoint 
+   * return registries lapse of time by work, by user and by item
+  */
   async lapse(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
     let byWork = {};
@@ -107,7 +117,9 @@ module.exports = {
       registries: registries,
     };
   },
-
+  /** registries/dated 
+   * return registries by date
+   */
   async byDate(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
     let byDate = {};
