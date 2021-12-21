@@ -26,16 +26,15 @@ module.exports = {
         byWork[reg.work.name] = {
           registries: [],
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
-          users:{}
+          users: {},
         };
-        
       }
       byWork[reg.work.name].registries.push(reg);
       byWork[reg.work.name].lapse.seconds += reg.lapse.seconds;
       byWork[reg.work.name].lapse.minutes += reg.lapse.minutes;
       byWork[reg.work.name].lapse.hours += reg.lapse.hours;
       byWork[reg.work.name].lapse.days += reg.lapse.days;
-     
+
       if (reg.users_permissions_user == null) {
         return;
       }
@@ -43,22 +42,26 @@ module.exports = {
       if (!byWork[reg.work.name].users[reg.users_permissions_user.id]) {
         byWork[reg.work.name].users[reg.users_permissions_user.id] = {
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
-          users_permissions_user:reg.users_permissions_user
+          users_permissions_user: reg.users_permissions_user,
         };
       }
-      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds;
-      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes;
-      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours;
-      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.days += reg.lapse.days;
-
-     
+      byWork[reg.work.name].users[
+        reg.users_permissions_user.id
+      ].lapse.seconds += reg.lapse.seconds;
+      byWork[reg.work.name].users[
+        reg.users_permissions_user.id
+      ].lapse.minutes += reg.lapse.minutes;
+      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.hours +=
+        reg.lapse.hours;
+      byWork[reg.work.name].users[reg.users_permissions_user.id].lapse.days +=
+        reg.lapse.days;
 
       if (!byUser[reg.users_permissions_user.id]) {
         byUser[reg.users_permissions_user.id] = {
           registries: [],
           users_permissions_user: reg.users_permissions_user,
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
-          works:{}
+          works: {},
         };
       }
       byUser[reg.users_permissions_user.id].registries.push(reg);
@@ -70,15 +73,19 @@ module.exports = {
       if (!byUser[reg.users_permissions_user.id].works[reg.work.name]) {
         byUser[reg.users_permissions_user.id].works[reg.work.name] = {
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
-          work:reg.work
-        }
+          work: reg.work,
+        };
       }
-      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.seconds += reg.lapse.seconds;
-      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.minutes += reg.lapse.minutes;
-      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.hours += reg.lapse.hours;
-      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.days += reg.lapse.days;
-
-
+      byUser[reg.users_permissions_user.id].works[
+        reg.work.name
+      ].lapse.seconds += reg.lapse.seconds;
+      byUser[reg.users_permissions_user.id].works[
+        reg.work.name
+      ].lapse.minutes += reg.lapse.minutes;
+      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.hours +=
+        reg.lapse.hours;
+      byUser[reg.users_permissions_user.id].works[reg.work.name].lapse.days +=
+        reg.lapse.days;
 
       if (!byItem[reg.item.id]) {
         byItem[reg.item.id] = {
@@ -104,7 +111,7 @@ module.exports = {
   async totalLapseItem(item) {
     let items = await this.rchild(item.id);
 
-    let totalLapse=[]
+    let totalLapse = [];
     await Promise.all(
       items.map(async (it) => {
         console.log(it);
@@ -117,7 +124,7 @@ module.exports = {
         });
       })
     );
-    console.log(totalLapse);
+
     return this.timeFormat(totalLapse.reduce((a, b) => a + b, 0));
   },
 
@@ -129,6 +136,7 @@ module.exports = {
 
     return this.timeFormat(time);
   },
+
   timeFormat(time) {
     let seconds = time / 1000;
     let minutes = seconds / 60;
@@ -137,6 +145,149 @@ module.exports = {
     const timer = { days, hours, minutes, seconds };
     return timer;
   },
+
+  /**
+   * GET THE ITEM AND THE CHILDS WITH THE REGISTRIES, THE LAPSE OF EACHONE
+   * AND THE SUM OF THE CHILDS ON EACH FATHER, BY ITEM,BY WORK AND BY users_permissions_users
+   * @params {Array} id of item *
+   */
+  async getRegistries(id) {
+    let registries = await strapi.services.registries.find({ item: id });
+    return registries;
+  },
+  async childLapse(ctx) {
+    let id = ctx.params.id;
+    let items = await this.rchild(id);
+    console.log(items);
+    let myMap = {};
+    await Promise.all(
+      items.map(async (item) => {
+        let asc = await this.ascen(item, id);
+        console.log(asc);
+        let itemInfo = await this.getItem(item);
+        let registries = await this.getRegistries(item);
+        //myMap[item] = { item: itemInfo };
+
+        asc.forEach(async (element) => {
+          if (!myMap[element]) {
+            myMap[element] = {};
+          }
+          if (!myMap[element].registries) {
+            myMap[element].registries = [];
+          }
+          if (!myMap[element].lapse) {
+            myMap[element].lapse = {};
+          }
+          myMap[element].registries.push(...registries);
+        });
+      })
+    );
+    await items.forEach(async (item) => {
+      myMap[item].lapse = await this.getLapseOfItem(myMap[item].registries);
+      delete myMap[item].registries;
+    });
+    
+    return myMap;
+  },
+  async getItem(id) {
+    let item = await strapi.services.items.findOne({ id });
+    return item;
+  },
+  async getLapseOfItem(registries) {
+    let byWork = {};
+    let byUser = {};
+    let byItem = {};
+
+    registries.forEach((reg) => {
+      reg["lapse"] = this.registryTime(reg);
+      if (!byWork[reg.work.name]) {
+        byWork[reg.work.name] = {
+          registries: [],
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+        };
+      }
+      byWork[reg.work.name].registries.push(reg);
+      byWork[reg.work.name].lapse.seconds += reg.lapse.seconds;
+      byWork[reg.work.name].lapse.minutes += reg.lapse.minutes;
+      byWork[reg.work.name].lapse.hours += reg.lapse.hours;
+      byWork[reg.work.name].lapse.days += reg.lapse.days;
+
+      if (reg.users_permissions_user == null) {
+        return;
+      }
+
+      if (!byUser[reg.users_permissions_user.id]) {
+        byUser[reg.users_permissions_user.id] = {
+          registries: [],
+          users_permissions_user: reg.users_permissions_user,
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+        };
+      }
+      byUser[reg.users_permissions_user.id].registries.push(reg);
+      byUser[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds;
+      byUser[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes;
+      byUser[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours;
+      byUser[reg.users_permissions_user.id].lapse.days += reg.lapse.days;
+
+      if (!byItem[reg.item.id]) {
+        byItem[reg.item.id] = {
+          registries: [],
+          item: reg.item,
+          lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
+        };
+      }
+      byItem[reg.item.id].registries.push(reg);
+      byItem[reg.item.id].lapse.seconds += reg.lapse.seconds;
+      byItem[reg.item.id].lapse.minutes += reg.lapse.minutes;
+      byItem[reg.item.id].lapse.hours += reg.lapse.hours;
+      byItem[reg.item.id].lapse.days += reg.lapse.days;
+    });
+
+    return { byWork, byUser, byItem };
+  },
+
+  async ascen(id, stop) {
+    let entities = [];
+    entities.push(parseInt(id));
+
+    while (id != null) {
+      if (stop == id) {
+        break;
+      }
+
+      id = await this.father(id);
+      if (id != null) {
+        entities.push(id);
+      }
+    }
+    return entities;
+  },
+
+  timeFormat(time) {
+    let seconds = time / 1000;
+    let minutes = seconds / 60;
+    let hours = minutes / 60;
+    let days = hours / 24;
+    const timer = { days, hours, minutes, seconds };
+    return timer;
+  },
+
+  /**
+ * let myMap ={}
+        let tree =[]
+        works.forEach(work => {
+            myMap[work.id] = work
+            myMap[work.id].childs = []
+            if (myMap[work.id].father == null){
+                tree.push(myMap[work.id])
+            }else{
+                if (typeof myMap[work.father.id] === "object") {
+                    myMap[work.father.id].childs.push(work);
+                  }
+            }
+        }); 
+ */
+
   async findOrder(ctx) {
     let colums = [
       "id",
@@ -333,7 +484,7 @@ module.exports = {
     );
     return aItem;
   },
-  
+
   async getItemByUserIdTree(ctx) {
     let userId = ctx.params.id;
     console.log(ctx.request.url);
@@ -351,11 +502,9 @@ module.exports = {
         if (item.padre == null) {
           tree.push(item);
         } else {
-          if(myMap[item.padre.id]){
+          if (myMap[item.padre.id]) {
             myMap[item.padre.id].items.push(item);
           }
-
-
         }
       });
 
@@ -366,6 +515,5 @@ module.exports = {
     console.log("no hay entidades");
 
     return [];
-    
   },
 };

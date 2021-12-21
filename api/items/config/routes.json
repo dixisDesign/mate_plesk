@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/items/child-lapse/:id",
+      "handler": "items.childLapse",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/items/get-ascendancy/:id",
       "handler": "items.ascendancy",
       "config": {
