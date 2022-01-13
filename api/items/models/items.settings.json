@@ -55,6 +55,30 @@
     "empresa": {
       "via": "items",
       "model": "empresas"
+    },
+    "product": {
+      "via": "items",
+      "model": "product"
+    },
+    "qty": {
+      "type": "integer"
+    },
+    "assigned": {
+      "type": "boolean",
+      "default": false
+    },
+    "registrable": {
+      "type": "boolean"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "finalizado": {
+      "type": "boolean"
+    },
+    "documents": {
+      "via": "item",
+      "collection": "documents"
     }
   }
 }

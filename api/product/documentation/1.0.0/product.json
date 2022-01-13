@@ -1,18 +1,18 @@
 {
   "paths": {
-    "/statuses": {
+    "/products": {
       "get": {
         "deprecated": false,
-        "description": "Find all the statuses's records",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Statuses"
+                    "$ref": "#/components/schemas/Product"
                   }
                 }
               }
@@ -51,7 +51,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Product"
         ],
         "parameters": [
           {
@@ -194,14 +194,14 @@
       },
       "post": {
         "deprecated": false,
-        "description": "Create a new statuses record",
+        "description": "Create a new record",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Statuses"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -239,7 +239,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Product"
         ],
         "requestBody": {
           "description": "",
@@ -247,20 +247,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewStatuses"
+                "$ref": "#/components/schemas/NewProduct"
               }
             }
           }
         }
       }
     },
-    "/statuses/count": {
+    "/products/count": {
       "get": {
         "deprecated": false,
-        "description": "Retrieve the number of statuses documents",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -306,22 +306,22 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Product"
         ],
         "parameters": []
       }
     },
-    "/statuses/{id}": {
+    "/products/{id}": {
       "get": {
         "deprecated": false,
-        "description": "Find one statuses record",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Statuses"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -359,7 +359,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Product"
         ],
         "parameters": [
           {
@@ -376,14 +376,14 @@
       },
       "put": {
         "deprecated": false,
-        "description": "Update a single statuses record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Statuses"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -421,7 +421,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Product"
         ],
         "requestBody": {
           "description": "",
@@ -429,7 +429,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewStatuses"
+                "$ref": "#/components/schemas/NewProduct"
               }
             }
           }
@@ -449,10 +449,10 @@
       },
       "delete": {
         "deprecated": false,
-        "description": "Delete a single statuses record",
+        "description": "Delete a record",
         "responses": {
           "200": {
-            "description": "deletes a single statuses based on the ID supplied",
+            "description": "deletes a single record based on the ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -495,7 +495,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Product"
         ],
         "parameters": [
           {
@@ -514,7 +514,7 @@
   },
   "components": {
     "schemas": {
-      "Statuses": {
+      "Product": {
         "required": [
           "id"
         ],
@@ -522,8 +522,26 @@
           "id": {
             "type": "string"
           },
-          "valor": {
+          "name": {
             "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Simple",
+              "Compuesto",
+              "Grupo"
+            ]
+          },
+          "Unit": {
+            "type": "string",
+            "enum": [
+              "KG",
+              "ML",
+              "UD",
+              "M3",
+              "M2"
+            ]
           },
           "items": {
             "type": "array",
@@ -607,7 +625,7 @@
               }
             }
           },
-          "empresa": {
+          "padre": {
             "required": [
               "id"
             ],
@@ -615,8 +633,26 @@
               "id": {
                 "type": "string"
               },
-              "nombre": {
+              "name": {
                 "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Simple",
+                  "Compuesto",
+                  "Grupo"
+                ]
+              },
+              "Unit": {
+                "type": "string",
+                "enum": [
+                  "KG",
+                  "ML",
+                  "UD",
+                  "M3",
+                  "M2"
+                ]
               },
               "items": {
                 "type": "array",
@@ -624,41 +660,14 @@
                   "type": "string"
                 }
               },
-              "users_permissions_users": {
+              "padre": {
+                "type": "string"
+              },
+              "products": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
-              },
-              "registries": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "statuses": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "tipo_items": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "works": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "data": {
-                "type": "object"
-              },
-              "status": {
-                "type": "boolean"
               },
               "published_at": {
                 "type": "string"
@@ -671,16 +680,92 @@
               }
             }
           },
+          "products": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "Simple",
+                    "Compuesto",
+                    "Grupo"
+                  ]
+                },
+                "Unit": {
+                  "type": "string",
+                  "enum": [
+                    "KG",
+                    "ML",
+                    "UD",
+                    "M3",
+                    "M2"
+                  ]
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "padre": {
+                  "type": "string"
+                },
+                "products": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
           }
         }
       },
-      "NewStatuses": {
+      "NewProduct": {
         "properties": {
-          "valor": {
+          "name": {
             "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Simple",
+              "Compuesto",
+              "Grupo"
+            ]
+          },
+          "Unit": {
+            "type": "string",
+            "enum": [
+              "KG",
+              "ML",
+              "UD",
+              "M3",
+              "M2"
+            ]
           },
           "items": {
             "type": "array",
@@ -688,8 +773,14 @@
               "type": "string"
             }
           },
-          "empresa": {
+          "padre": {
             "type": "string"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "published_at": {
             "type": "string",
@@ -707,7 +798,7 @@
   },
   "tags": [
     {
-      "name": "Statuses"
+      "name": "Product"
     }
   ]
 }

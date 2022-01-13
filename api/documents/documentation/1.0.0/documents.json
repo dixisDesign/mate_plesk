@@ -1,18 +1,18 @@
 {
   "paths": {
-    "/statuses": {
+    "/documents": {
       "get": {
         "deprecated": false,
-        "description": "Find all the statuses's records",
+        "description": "Find all the documents's records",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "Retrieve documents document(s)",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Statuses"
+                    "$ref": "#/components/schemas/Documents"
                   }
                 }
               }
@@ -51,7 +51,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Documents"
         ],
         "parameters": [
           {
@@ -194,14 +194,14 @@
       },
       "post": {
         "deprecated": false,
-        "description": "Create a new statuses record",
+        "description": "Create a new documents record",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "Retrieve documents document(s)",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Statuses"
+                  "$ref": "#/components/schemas/Documents"
                 }
               }
             }
@@ -239,7 +239,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Documents"
         ],
         "requestBody": {
           "description": "",
@@ -247,20 +247,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewStatuses"
+                "$ref": "#/components/schemas/NewDocuments"
               }
             }
           }
         }
       }
     },
-    "/statuses/count": {
+    "/documents/count": {
       "get": {
         "deprecated": false,
-        "description": "Retrieve the number of statuses documents",
+        "description": "Retrieve the number of documents documents",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "Retrieve documents document(s)",
             "content": {
               "application/json": {
                 "schema": {
@@ -306,22 +306,22 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Documents"
         ],
         "parameters": []
       }
     },
-    "/statuses/{id}": {
+    "/documents/{id}": {
       "get": {
         "deprecated": false,
-        "description": "Find one statuses record",
+        "description": "Find one documents record",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "Retrieve documents document(s)",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Statuses"
+                  "$ref": "#/components/schemas/Documents"
                 }
               }
             }
@@ -359,7 +359,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Documents"
         ],
         "parameters": [
           {
@@ -376,14 +376,14 @@
       },
       "put": {
         "deprecated": false,
-        "description": "Update a single statuses record",
+        "description": "Update a single documents record",
         "responses": {
           "200": {
-            "description": "Retrieve statuses document(s)",
+            "description": "Retrieve documents document(s)",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Statuses"
+                  "$ref": "#/components/schemas/Documents"
                 }
               }
             }
@@ -421,7 +421,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Documents"
         ],
         "requestBody": {
           "description": "",
@@ -429,7 +429,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewStatuses"
+                "$ref": "#/components/schemas/NewDocuments"
               }
             }
           }
@@ -449,10 +449,10 @@
       },
       "delete": {
         "deprecated": false,
-        "description": "Delete a single statuses record",
+        "description": "Delete a single documents record",
         "responses": {
           "200": {
-            "description": "deletes a single statuses based on the ID supplied",
+            "description": "deletes a single documents based on the ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -495,7 +495,7 @@
         },
         "summary": "",
         "tags": [
-          "Statuses"
+          "Documents"
         ],
         "parameters": [
           {
@@ -514,7 +514,7 @@
   },
   "components": {
     "schemas": {
-      "Statuses": {
+      "Documents": {
         "required": [
           "id"
         ],
@@ -522,80 +522,68 @@
           "id": {
             "type": "string"
           },
-          "valor": {
+          "name": {
             "type": "string"
           },
-          "items": {
+          "file": {
             "type": "array",
             "items": {
               "required": [
-                "id"
+                "id",
+                "name",
+                "hash",
+                "mime",
+                "size",
+                "url",
+                "provider"
               ],
               "properties": {
                 "id": {
                   "type": "string"
                 },
-                "nombre": {
+                "name": {
                   "type": "string"
                 },
-                "data": {
-                  "type": "object"
-                },
-                "tipo": {
+                "alternativeText": {
                   "type": "string"
                 },
-                "status": {
+                "caption": {
                   "type": "string"
                 },
-                "inicio": {
-                  "type": "string"
-                },
-                "final": {
-                  "type": "string"
-                },
-                "padre": {
-                  "type": "string"
-                },
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "users_permissions_users": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "empresa": {
-                  "type": "string"
-                },
-                "product": {
-                  "type": "string"
-                },
-                "qty": {
+                "width": {
                   "type": "integer"
                 },
-                "assigned": {
-                  "type": "boolean"
+                "height": {
+                  "type": "integer"
                 },
-                "registrable": {
-                  "type": "boolean"
+                "formats": {
+                  "type": "object"
                 },
-                "active": {
-                  "type": "boolean"
+                "hash": {
+                  "type": "string"
                 },
-                "finalizado": {
-                  "type": "boolean"
+                "ext": {
+                  "type": "string"
                 },
-                "documents": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                "mime": {
+                  "type": "string"
                 },
-                "published_at": {
+                "size": {
+                  "type": "number"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "previewUrl": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "provider_metadata": {
+                  "type": "object"
+                },
+                "related": {
                   "type": "string"
                 },
                 "created_by": {
@@ -607,7 +595,7 @@
               }
             }
           },
-          "empresa": {
+          "item": {
             "required": [
               "id"
             ],
@@ -616,6 +604,24 @@
                 "type": "string"
               },
               "nombre": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object"
+              },
+              "tipo": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "inicio": {
+                "type": "string"
+              },
+              "final": {
+                "type": "string"
+              },
+              "padre": {
                 "type": "string"
               },
               "items": {
@@ -630,35 +636,32 @@
                   "type": "string"
                 }
               },
-              "registries": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+              "empresa": {
+                "type": "string"
               },
-              "statuses": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+              "product": {
+                "type": "string"
               },
-              "tipo_items": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+              "qty": {
+                "type": "integer"
               },
-              "works": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "data": {
-                "type": "object"
-              },
-              "status": {
+              "assigned": {
                 "type": "boolean"
+              },
+              "registrable": {
+                "type": "boolean"
+              },
+              "active": {
+                "type": "boolean"
+              },
+              "finalizado": {
+                "type": "boolean"
+              },
+              "documents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "published_at": {
                 "type": "string"
@@ -677,18 +680,12 @@
           }
         }
       },
-      "NewStatuses": {
+      "NewDocuments": {
         "properties": {
-          "valor": {
+          "name": {
             "type": "string"
           },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "empresa": {
+          "item": {
             "type": "string"
           },
           "published_at": {
@@ -707,7 +704,7 @@
   },
   "tags": [
     {
-      "name": "Statuses"
+      "name": "Documents"
     }
   ]
 }

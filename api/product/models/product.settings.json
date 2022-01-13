@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "name": "Product",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Simple",
+        "Compuesto",
+        "Grupo"
+      ]
+    },
+    "Unit": {
+      "type": "enumeration",
+      "enum": [
+        "KG",
+        "ML",
+        "UD",
+        "M3",
+        "M2"
+      ]
+    },
+    "items": {
+      "via": "product",
+      "collection": "items"
+    },
+    "padre": {
+      "model": "product",
+      "via": "products"
+    },
+    "products": {
+      "collection": "product",
+      "via": "padre"
+    }
+  }
+}

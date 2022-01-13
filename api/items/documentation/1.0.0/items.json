@@ -1254,6 +1254,30 @@
               "empresa": {
                 "type": "string"
               },
+              "product": {
+                "type": "string"
+              },
+              "qty": {
+                "type": "integer"
+              },
+              "assigned": {
+                "type": "boolean"
+              },
+              "registrable": {
+                "type": "boolean"
+              },
+              "active": {
+                "type": "boolean"
+              },
+              "finalizado": {
+                "type": "boolean"
+              },
+              "documents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "published_at": {
                 "type": "string"
               },
@@ -1310,6 +1334,30 @@
                 },
                 "empresa": {
                   "type": "string"
+                },
+                "product": {
+                  "type": "string"
+                },
+                "qty": {
+                  "type": "integer"
+                },
+                "assigned": {
+                  "type": "boolean"
+                },
+                "registrable": {
+                  "type": "boolean"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "finalizado": {
+                  "type": "boolean"
+                },
+                "documents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "published_at": {
                   "type": "string"
@@ -1456,6 +1504,111 @@
               }
             }
           },
+          "product": {
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Simple",
+                  "Compuesto",
+                  "Grupo"
+                ]
+              },
+              "Unit": {
+                "type": "string",
+                "enum": [
+                  "KG",
+                  "ML",
+                  "UD",
+                  "M3",
+                  "M2"
+                ]
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "padre": {
+                "type": "string"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "published_at": {
+                "type": "string"
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
+          },
+          "qty": {
+            "type": "integer"
+          },
+          "assigned": {
+            "type": "boolean",
+            "default": false
+          },
+          "registrable": {
+            "type": "boolean"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "finalizado": {
+            "type": "boolean"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "file": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "item": {
+                  "type": "string"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
@@ -1501,6 +1654,31 @@
           },
           "empresa": {
             "type": "string"
+          },
+          "product": {
+            "type": "string"
+          },
+          "qty": {
+            "type": "integer"
+          },
+          "assigned": {
+            "type": "boolean",
+            "default": false
+          },
+          "registrable": {
+            "type": "boolean"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "finalizado": {
+            "type": "boolean"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "published_at": {
             "type": "string",
