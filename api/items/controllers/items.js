@@ -288,6 +288,55 @@ module.exports = {
         }); 
  */
 
+  async ordenados(ctx){
+    let colums = [
+      "id",
+      "nombre",
+      "description",
+      "data",
+      "tipo_item",
+      "status",
+      "inicio",
+      "final",
+      "padre",
+      "empresa",
+      "tipo",
+      "t",
+      "items",
+      "users_permissions_users", 
+    ];
+    let entities = await strapi.services.items.find(ctx.query)  
+    entities.map((element)=>{
+      Object.keys(element).forEach((key)=>{
+        if(colums.indexOf(key) == -1){
+          delete element[key]
+        }
+      })
+    })
+
+    let myMap = {};
+    let tree = [];
+    await Promise.all(
+      entities.map(async (ent) => {
+        //ent.lapse = await this.lapseItem(ent);
+        ent.totalLapse = await this.totalLapseItem(ent);
+        myMap[ent.id] = ent;
+      })
+    );
+    entities.forEach((item) => {
+      item.items = [];
+      if (item.padre == null) {
+        tree.push(item);
+      } else {
+        myMap[item.padre.id].items.push(item);
+      }
+    });
+
+    return tree.map((entity) =>
+      sanitizeEntity(entity, { model: strapi.models.items })
+    );
+  },      
+
   async findOrder(ctx) {
     let colums = [
       "id",
@@ -311,7 +360,8 @@ module.exports = {
         colums: colums,
       });
     } else {
-      entities = await strapi.services.items.find(ctx.query);
+      //entities = await strapi.services.items.find(ctx.query);
+      entities = await strapi.services.items.find(ctx.query)
     }
 
     let myMap = {};
@@ -399,7 +449,7 @@ module.exports = {
         myMap[item.padre.id].items.push(item);
       }
     });
-
+    
     return tree.map((entity) =>
       sanitizeEntity(entity, { model: strapi.models.items })
     );
