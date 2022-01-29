@@ -15,7 +15,7 @@ module.exports = {
    *
    * @return {Array}
    */
-  async lapseItem(item) {
+  async lapseItem(item,showRegistries=true) {
     let registries = await strapi.services.registries.find({ item: item.id });
     let byWork = {};
     let byUser = {};
@@ -29,7 +29,7 @@ module.exports = {
           users: {},
         };
       }
-      byWork[reg.work.name].registries.push(reg);
+      if (showRegistries){byWork[reg.work.name].registries.push(reg);}
       byWork[reg.work.name].lapse.seconds += reg.lapse.seconds;
       byWork[reg.work.name].lapse.minutes += reg.lapse.minutes;
       byWork[reg.work.name].lapse.hours += reg.lapse.hours;
@@ -64,7 +64,7 @@ module.exports = {
           works: {},
         };
       }
-      byUser[reg.users_permissions_user.id].registries.push(reg);
+      if (showRegistries){byUser[reg.users_permissions_user.id].registries.push(reg);}
       byUser[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds;
       byUser[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes;
       byUser[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours;
@@ -94,7 +94,7 @@ module.exports = {
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
         };
       }
-      byItem[reg.item.id].registries.push(reg);
+      if (showRegistries){byItem[reg.item.id].registries.push(reg);}
       byItem[reg.item.id].lapse.seconds += reg.lapse.seconds;
       byItem[reg.item.id].lapse.minutes += reg.lapse.minutes;
       byItem[reg.item.id].lapse.hours += reg.lapse.hours;
@@ -104,7 +104,7 @@ module.exports = {
       byWork: byWork,
       byUser: byUser,
       byItem: byItem,
-      registries: registries,
+      registries: showRegistries? registries:[],
     };
   },
 
@@ -303,7 +303,9 @@ module.exports = {
       "tipo",
       "t",
       "items",
-      "users_permissions_users", 
+      "users_permissions_users",
+      "lapse",
+      "totalLapse" 
     ];
     let entities = await strapi.services.items.find(ctx.query)  
     entities.map((element)=>{
@@ -318,7 +320,7 @@ module.exports = {
     let tree = [];
     await Promise.all(
       entities.map(async (ent) => {
-        //ent.lapse = await this.lapseItem(ent);
+        ent.lapse = await this.lapseItem(ent, false);
         ent.totalLapse = await this.totalLapseItem(ent);
         myMap[ent.id] = ent;
       })
