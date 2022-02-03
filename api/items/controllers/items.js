@@ -361,7 +361,8 @@ async mobileOrdered(ctx){
       users_permissions_users:this.OnlyNombreAndId(item.users_permissions_users),
       items:[],
       inicio:item.inicio,
-      final:item.final
+      final:item.final,
+      tipo:item.tipo
     }
     )
   })
