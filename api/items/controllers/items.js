@@ -359,7 +359,6 @@ async mobileOrdered(ctx){
       nombre: item.nombre,
       status: item.status,
       users_permissions_users:this.OnlyNombreAndId(item.users_permissions_users),
-      lapse: this.registryTime(item),
       items:[],
       inicio:item.inicio,
       final:item.final
@@ -371,7 +370,7 @@ async mobileOrdered(ctx){
   let tree = [];
   await Promise.all(
     entities.map(async (ent) => {
-      ent.lapse = await this.lapseItem(ent, false);
+     // ent.lapse = await this.lapseItem(ent, false);
       ent.totalLapse = await this.totalLapseItem(ent);
       myMap[ent.id] = ent;
     })
