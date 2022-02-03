@@ -5,4 +5,7 @@
  * to customize this model
  */
 
-module.exports = {};
+module.exports = {
+
+    
+};

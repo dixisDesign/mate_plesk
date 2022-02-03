@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/items/mobile-ordered/",
+      "handler": "items.mobileOrdered",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/items/ordenados/",
       "handler": "items.ordenados",
       "config": {

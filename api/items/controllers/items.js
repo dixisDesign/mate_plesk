@@ -289,7 +289,7 @@ module.exports = {
  */
 
   async ordenados(ctx){
-    let colums = [
+     let colums = [
       "id",
       "nombre",
       "description",
@@ -297,25 +297,29 @@ module.exports = {
       "tipo_item",
       "status",
       "inicio",
-      "final",
+      "final", 
       "padre",
       "empresa",
       "tipo",
-      "t",
+      "t", 
       "items",
       "users_permissions_users",
       "lapse",
-      "totalLapse" 
-    ];
-    let entities = await strapi.services.items.find(ctx.query)  
-    entities.map((element)=>{
+      "totalLapse"  
+    ]; 
+    let entities = await strapi.services.items.find(ctx.query) 
+    /* const entities = await strapi
+    .query('items')
+    .model.fetchAll()  */
+      entities.map((element)=>{
+        
       Object.keys(element).forEach((key)=>{
         if(colums.indexOf(key) == -1){
           delete element[key]
         }
       })
-    })
-
+    }) 
+    
     let myMap = {};
     let tree = [];
     await Promise.all(
@@ -336,8 +340,77 @@ module.exports = {
 
     return tree.map((entity) =>
       sanitizeEntity(entity, { model: strapi.models.items })
-    );
+    );  
+    
+    
   },      
+
+/**Mobile endpoints */
+
+async mobileOrdered(ctx){
+
+  let items = await strapi.services.items.find(ctx.query)
+  let entities = []
+  items.forEach((item)=>{
+    entities.push(
+      {
+      id: item.id,
+      padre: item.padre,
+      nombre: item.nombre,
+      status: item.status,
+      users_permissions_users:this.OnlyNombreAndId(item.users_permissions_users),
+      lapse: this.registryTime(item),
+      items:[],
+      inicio:item.inicio,
+      final:item.final
+    }
+    )
+  })
+
+  let myMap = {};
+  let tree = [];
+  await Promise.all(
+    entities.map(async (ent) => {
+      ent.lapse = await this.lapseItem(ent, false);
+      ent.totalLapse = await this.totalLapseItem(ent);
+      myMap[ent.id] = ent;
+    })
+  );
+  entities.forEach((item) => {
+    item.items = [];
+    if (item.padre == null) {
+      tree.push(item);
+    } else {
+      myMap[item.padre.id].items.push(item);
+    }
+  });
+
+  return tree.map((entity) =>
+    sanitizeEntity(entity, { model: strapi.models.items })
+  );  
+
+
+
+
+//return entities
+
+
+
+
+},
+/** Return only Id and Name of users_permissions_users */
+OnlyNombreAndId(users_permissions_users){
+  let usuarios = users_permissions_users.map((user)=>{
+    return {
+      id:user.id,
+      name:user.name
+    }
+  })
+  return usuarios
+
+
+},
+
 
   async findOrder(ctx) {
     let colums = [
