@@ -107,6 +107,14 @@
     }, 
     {
       "method": "PUT",
+      "path": "/items/activator/",
+      "handler": "items.activator",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
       "path": "/registries/bulk",
       "handler": "registries.updateBulk",
       "config": {

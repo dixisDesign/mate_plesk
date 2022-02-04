@@ -391,15 +391,7 @@ async mobileOrdered(ctx){
 
   return tree.map((entity) =>
     sanitizeEntity(entity, { model: strapi.models.items })
-  );  
-
-
-
-
-//return entities
-
-
-
+  );
 
 },
 /** Return only Id and Name of users_permissions_users */
@@ -413,6 +405,22 @@ OnlyNombreAndId(users_permissions_users){
   return usuarios
 
 
+},
+/**Change item.active of item and his childs */
+
+async activator(ctx){
+  let id = ctx.request.body.id
+  let active = ctx.request.body.active
+  let items = await this.rchild(id)
+  console.log(items);
+  let entities = []
+  await Promise.all(
+    items.map(async (ent) => {
+      const item = await strapi.services.items.update({ id: ent }, {active});
+      entities.push(item);
+    })
+  );
+  return entities
 },
 
 
@@ -580,7 +588,7 @@ OnlyNombreAndId(users_permissions_users){
     }
     return null;
   },
-
+ 
   async assignUsers(ctx) {
     let items = ctx.request.body.items;
     let users = { users_permissions_users: ctx.request.body.users };
