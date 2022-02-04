@@ -362,7 +362,11 @@ async mobileOrdered(ctx){
       items:[],
       inicio:item.inicio,
       final:item.final,
-      tipo:item.tipo
+      tipo:item.tipo,
+      assigned:item.assigned,
+      registrable: item.registrable,
+      active:item.active,
+      finalizado:item.finalizado
     }
     )
   })
