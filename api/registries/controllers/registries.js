@@ -6,7 +6,6 @@
  */
 
 module.exports = {
-
   async updateBulk(ctx) {
     let body = ctx.request.body;
     let response = [];
@@ -23,9 +22,9 @@ module.exports = {
 
     return response;
   },
-  /** registries/supervisor endpoint 
+  /** registries/supervisor endpoint
    * return registries that are not supervised.
-  */
+   */
   async supervisor(ctx) {
     let users = await strapi.query("user", "users-permissions").find();
     let registries;
@@ -40,12 +39,11 @@ module.exports = {
       })
     );
 
-    console.log("supervisor");
     return users;
   },
   /** /registries/have-registries/:ids endpoint
    *  return count of registries that have the id of item
-  */
+   */
   async haveRegistries(ctx) {
     let ids = JSON.parse(ctx.params.ids);
     let counted = 0;
@@ -57,9 +55,9 @@ module.exports = {
     );
     return counted;
   },
-  /** registries/lapse endpoint 
+  /** registries/lapse endpoint
    * return registries lapse of time by work, by user and by item
-  */
+   */
   async lapse(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
     let byWork = {};
@@ -117,23 +115,64 @@ module.exports = {
       registries: registries,
     };
   },
-  /** registries/dated 
+  /** registries/dated
    * return registries by date
    */
+
+  async ascendancyId(id) {
+    let entities = [];
+    entities.push(parseInt(id));
+    while (id != null) {
+      id = await this.father(id);
+      if (id != null) {
+        entities.push(id);
+      }
+    }
+    return entities;
+  },
+  async getItem(id) {
+    let item = await strapi.services.items.findOne({ id });
+    return item;
+  },
+  async father(id) {
+    const entities = await strapi.services.items.find({ id: id });
+    if (entities[0].padre) {
+      return entities[0].padre.id;
+    }
+    return null;
+  },
+  async breadCrumb(id) {
+    let ids = await this.ascendancyId(id);
+    let items = [];
+    await Promise.all(
+      ids.map(async (idItem) => {
+        let item = await this.getItem(idItem);
+        items.push({ id: item.id, nombre: item.nombre,tipo:{id:item.tipo.id,tipo:item.tipo.tipo}});
+      })
+    );
+    return items;
+  },
+
   async byDate(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
     let byDate = {};
-    registries.forEach((reg) => {
-      let d = reg.inicio.split("T")[0];
-      if (byDate[d]) {
-        byDate[d].push(reg);
-      } else {
-        byDate[d] = [];
-        byDate[d].push(reg);
-      }
-    });
+    let mapa = {}
+    await Promise.all(
+      registries.map(async (reg) => {
+        reg.item.breadcrumb = await this.breadCrumb(reg.item.id);  
+        let d = reg.inicio.split("T")[0];
+        if (byDate[d]) {
+          byDate[d].push(reg);
+        } else {
+          byDate[d] = [];
+          byDate[d].push(reg);
+        }
+      })
+    );
+
+    
     const dates = Object.keys(byDate);
-    byDate.dates = dates
+    byDate.dates = dates;
     return byDate;
   },
 

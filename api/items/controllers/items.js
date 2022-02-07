@@ -561,7 +561,7 @@ module.exports = {
   async breadCrumb(id) {
     let ids = await this.ascendancyId(id);
     let items = [];
-    Promise.all(
+    await Promise.all(
       ids.map(async (idItem) => {
         let item = await this.getItem(idItem);
         items.push({ id: item.id, nombre: item.nombre });
