@@ -15,7 +15,7 @@ module.exports = {
    *
    * @return {Array}
    */
-  async lapseItem(item,showRegistries=true) {
+  async lapseItem(item, showRegistries = true) {
     let registries = await strapi.services.registries.find({ item: item.id });
     let byWork = {};
     let byUser = {};
@@ -29,7 +29,9 @@ module.exports = {
           users: {},
         };
       }
-      if (showRegistries){byWork[reg.work.name].registries.push(reg);}
+      if (showRegistries) {
+        byWork[reg.work.name].registries.push(reg);
+      }
       byWork[reg.work.name].lapse.seconds += reg.lapse.seconds;
       byWork[reg.work.name].lapse.minutes += reg.lapse.minutes;
       byWork[reg.work.name].lapse.hours += reg.lapse.hours;
@@ -64,7 +66,9 @@ module.exports = {
           works: {},
         };
       }
-      if (showRegistries){byUser[reg.users_permissions_user.id].registries.push(reg);}
+      if (showRegistries) {
+        byUser[reg.users_permissions_user.id].registries.push(reg);
+      }
       byUser[reg.users_permissions_user.id].lapse.seconds += reg.lapse.seconds;
       byUser[reg.users_permissions_user.id].lapse.minutes += reg.lapse.minutes;
       byUser[reg.users_permissions_user.id].lapse.hours += reg.lapse.hours;
@@ -94,7 +98,9 @@ module.exports = {
           lapse: { seconds: 0, minutes: 0, days: 0, hours: 0 },
         };
       }
-      if (showRegistries){byItem[reg.item.id].registries.push(reg);}
+      if (showRegistries) {
+        byItem[reg.item.id].registries.push(reg);
+      }
       byItem[reg.item.id].lapse.seconds += reg.lapse.seconds;
       byItem[reg.item.id].lapse.minutes += reg.lapse.minutes;
       byItem[reg.item.id].lapse.hours += reg.lapse.hours;
@@ -104,7 +110,7 @@ module.exports = {
       byWork: byWork,
       byUser: byUser,
       byItem: byItem,
-      registries: showRegistries? registries:[],
+      registries: showRegistries ? registries : [],
     };
   },
 
@@ -186,7 +192,7 @@ module.exports = {
       myMap[item].lapse = await this.getLapseOfItem(myMap[item].registries);
       delete myMap[item].registries;
     });
-    
+
     return myMap;
   },
   async getItem(id) {
@@ -272,24 +278,8 @@ module.exports = {
     return timer;
   },
 
-  /**
- * let myMap ={}
-        let tree =[]
-        works.forEach(work => {
-            myMap[work.id] = work
-            myMap[work.id].childs = []
-            if (myMap[work.id].father == null){
-                tree.push(myMap[work.id])
-            }else{
-                if (typeof myMap[work.father.id] === "object") {
-                    myMap[work.father.id].childs.push(work);
-                  }
-            }
-        }); 
- */
-
-  async ordenados(ctx){
-     let colums = [
+  async ordenados(ctx) {
+    let colums = [
       "id",
       "nombre",
       "description",
@@ -297,29 +287,28 @@ module.exports = {
       "tipo_item",
       "status",
       "inicio",
-      "final", 
+      "final",
       "padre",
       "empresa",
       "tipo",
-      "t", 
+      "t",
       "items",
       "users_permissions_users",
       "lapse",
-      "totalLapse"  
-    ]; 
-    let entities = await strapi.services.items.find(ctx.query) 
+      "totalLapse",
+    ];
+    let entities = await strapi.services.items.find(ctx.query);
     /* const entities = await strapi
     .query('items')
     .model.fetchAll()  */
-      entities.map((element)=>{
-        
-      Object.keys(element).forEach((key)=>{
-        if(colums.indexOf(key) == -1){
-          delete element[key]
+    entities.map((element) => {
+      Object.keys(element).forEach((key) => {
+        if (colums.indexOf(key) == -1) {
+          delete element[key];
         }
-      })
-    }) 
-    
+      });
+    });
+
     let myMap = {};
     let tree = [];
     await Promise.all(
@@ -340,89 +329,89 @@ module.exports = {
 
     return tree.map((entity) =>
       sanitizeEntity(entity, { model: strapi.models.items })
-    );  
-    
-    
-  },      
+    );
+  },
 
-/**Mobile endpoints */
+  /**Mobile endpoints */
 
-async mobileOrdered(ctx){
+  async mobileOrdered(ctx) {
+    let items = await strapi.services.items.find(ctx.query);
+    let entities = [];
 
-  let items = await strapi.services.items.find(ctx.query)
-  let entities = []
-  items.forEach((item)=>{
-    entities.push(
-      {
-      id: item.id,
-      padre: item.padre,
-      nombre: item.nombre,
-      status: item.status,
-      users_permissions_users:this.OnlyNombreAndId(item.users_permissions_users),
-      items:[],
-      inicio:item.inicio,
-      final:item.final,
-      tipo:item.tipo,
-      assigned:item.assigned,
-      registrable: item.registrable,
-      active:item.active,
-      finalizado:item.finalizado
-    }
-    )
-  })
+    await Promise.all(
+      items.map(async (item) => {
+        let breadcrumb = await this.breadCrumb(item.id);
+        entities.push({
+          id: item.id,
+          padre: item.padre,
+          breadcrumb: breadcrumb,
+          nombre: item.nombre,
+          status: item.status,
+          users_permissions_users: this.OnlyNombreAndId(
+            item.users_permissions_users
+          ),
+          items: [],
+          inicio: item.inicio,
+          final: item.final,
+          tipo: item.tipo,
+          assigned: item.assigned,
+          registrable: item.registrable,
+          active: item.active,
+          finalizado: item.finalizado,
+        });
+      })
+    );
+    let myMap = {};
+    let tree = [];
+    await Promise.all(
+      entities.map(async (ent) => {
+        // ent.lapse = await this.lapseItem(ent, false);
+        ent.totalLapse = await this.totalLapseItem(ent);
+        myMap[ent.id] = ent;
+      })
+    );
+    entities.forEach((item) => {
+      item.items = [];
+      if (item.padre == null) {
+        tree.push(item);
+      } else {
+        myMap[item.padre.id].items.push(item);
+      }
+    });
 
-  let myMap = {};
-  let tree = [];
-  await Promise.all(
-    entities.map(async (ent) => {
-     // ent.lapse = await this.lapseItem(ent, false);
-      ent.totalLapse = await this.totalLapseItem(ent);
-      myMap[ent.id] = ent;
-    })
-  );
-  entities.forEach((item) => {
-    item.items = [];
-    if (item.padre == null) {
-      tree.push(item);
-    } else {
-      myMap[item.padre.id].items.push(item);
-    }
-  });
+    return tree.map((entity) =>
+      sanitizeEntity(entity, { model: strapi.models.items })
+    );
+  },
+  /** Return only Id and Name of users_permissions_users */
+  OnlyNombreAndId(users_permissions_users) {
+    let usuarios = users_permissions_users.map((user) => {
+      return {
+        id: user.id,
+        name: user.name,
+      };
+    });
+    return usuarios;
+  },
+  /**Change item.active of item and his childs */
 
-  return tree.map((entity) =>
-    sanitizeEntity(entity, { model: strapi.models.items })
-  );
-
-},
-/** Return only Id and Name of users_permissions_users */
-OnlyNombreAndId(users_permissions_users){
-  let usuarios = users_permissions_users.map((user)=>{
-    return {
-      id:user.id,
-      name:user.name
-    }
-  })
-  return usuarios
-
-
-},
-/**Change item.active of item and his childs */
-
-async activator(ctx){
-  let id = ctx.request.body.id
-  let active = ctx.request.body.active
-  let items = await this.rchild(id)
-  console.log(items);
-  let entities = []
-  await Promise.all(
-    items.map(async (ent) => {
-      const item = await strapi.services.items.update({ id: ent }, {active});
-      entities.push(item);
-    })
-  );
-  return entities
-},
-
+  async activator(ctx) {
+    let id = ctx.request.body.id;
+    let active = ctx.request.body.active;
+    let items = await this.rchild(id);
+    console.log(items);
+    let entities = [];
+    await Promise.all(
+      items.map(async (ent) => {
+        const item = await strapi.services.items.update(
+          { id: ent },
+          { active }
+        );
+        entities.push(item);
+      })
+    );
+    return entities;
+  },
 
   async findOrder(ctx) {
     let colums = [
@@ -448,7 +437,7 @@ async activator(ctx){
       });
     } else {
       //entities = await strapi.services.items.find(ctx.query);
-      entities = await strapi.services.items.find(ctx.query)
+      entities = await strapi.services.items.find(ctx.query);
     }
 
     let myMap = {};
@@ -536,7 +525,7 @@ async activator(ctx){
         myMap[item.padre.id].items.push(item);
       }
     });
-    
+
     return tree.map((entity) =>
       sanitizeEntity(entity, { model: strapi.models.items })
     );
@@ -554,6 +543,31 @@ async activator(ctx){
       }
     }
     return entities;
+  },
+  async ascendancyId(id) {
+    let entities = [];
+    entities.push(parseInt(id));
+    while (id != null) {
+      console.log(id);
+      id = await this.father(id);
+      if (id != null) {
+        entities.push(id);
+      }
+    }
+    return entities;
+  },
+
+
+  async breadCrumb(id) {
+    let ids = await this.ascendancyId(id);
+    let items = [];
+    Promise.all(
+      ids.map(async (idItem) => {
+        let item = await this.getItem(idItem);
+        items.push({ id: item.id, nombre: item.nombre });
+      })
+    );
+    return items;
   },
 
   async getAllChilds(ctx) {
@@ -588,7 +602,7 @@ async activator(ctx){
     }
     return null;
   },
- 
+
   async assignUsers(ctx) {
     let items = ctx.request.body.items;
     let users = { users_permissions_users: ctx.request.body.users };
