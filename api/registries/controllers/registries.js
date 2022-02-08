@@ -156,34 +156,53 @@ module.exports = {
   async byDate(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
     let byDate = {};
-    let mapa = {}
     await Promise.all(
       registries.map(async (reg) => {
         reg.item.breadcrumb = await this.breadCrumb(reg.item.id);  
         let d = reg.inicio.split("T")[0];
         if (byDate[d]) {
+          reg.sumaTiempo = this.registryTime(reg)
+          byDate['t'+d]=this.sumRegistries(byDate['t'+d], reg.sumaTiempo);
           byDate[d].push(reg);
         } else {
+          reg.sumaTiempo = this.registryTime(reg)
           byDate[d] = [];
+          byDate['t'+d]= {seconds:0,minutes:0,hours:0,days:0};
+          byDate['t'+d]=this.sumRegistries(byDate['t'+d], reg.sumaTiempo);
           byDate[d].push(reg);
         }
       })
-    );
-
-    
+    );    
     const dates = Object.keys(byDate);
-    byDate.dates = dates;
     return byDate;
   },
+  sumRegistries(regA,RegB){
+   
+      let sum = {seconds:0,minutes:0,hours:0,days:0};
+      sum.seconds = regA.seconds + RegB.seconds;
+      sum.minutes = regA.minutes + RegB.minutes;
+      sum.hours = regA.hours + RegB.hours;
+      sum.days = regA.days + RegB.days;
+      return sum;
+  },
 
+  async listByUser(ctx) {
+    let registries = await strapi.services.registries.find(ctx.query);
+    await Promise.all(
+      registries.map(async (reg) => {
+        reg.item.breadcrumb = await this.breadCrumb(reg.item.id);
+      })
+    );    
+    return registries
+  },
   /**
    * PRIVATE FUNCTIONS
    */
   registryTime(reg) {
     let time = new Date(reg.final).getTime() - new Date(reg.inicio).getTime();
-
     return this.timeFormat(time);
   },
+
   timeFormat(time) {
     let seconds = time / 1000;
     let minutes = seconds / 60;

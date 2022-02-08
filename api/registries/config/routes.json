@@ -2,6 +2,15 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/registries/listbyuser/",
+      "handler": "registries.listByUser",
+      "config": { 
+        "policies": []
+      }
+    },
+
+    {
+      "method": "GET",
       "path": "/registries/dated",
       "handler": "registries.byDate",
       "config": { 
