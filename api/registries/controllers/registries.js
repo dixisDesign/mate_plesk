@@ -155,21 +155,22 @@ module.exports = {
 
   async byDate(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
-    let byDate = {};
+    let byDate = {dates:{},tiempo:{}};
+    
     await Promise.all(
       registries.map(async (reg) => {
         reg.item.breadcrumb = await this.breadCrumb(reg.item.id);  
         let d = reg.inicio.split("T")[0];
-        if (byDate[d]) {
+        if (byDate.dates[d]) {
           reg.sumaTiempo = this.registryTime(reg)
-          byDate['t'+d]=this.sumRegistries(byDate['t'+d], reg.sumaTiempo);
-          byDate[d].push(reg);
+          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          byDate.dates[d].push(reg);
         } else {
           reg.sumaTiempo = this.registryTime(reg)
-          byDate[d] = [];
-          byDate['t'+d]= {seconds:0,minutes:0,hours:0,days:0};
-          byDate['t'+d]=this.sumRegistries(byDate['t'+d], reg.sumaTiempo);
-          byDate[d].push(reg);
+          byDate.dates[d] = [];
+          byDate.tiempo[d]= {seconds:0,minutes:0,hours:0,days:0};
+          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          byDate.dates[d].push(reg);
         }
       })
     );    
