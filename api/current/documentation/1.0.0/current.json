@@ -1,18 +1,18 @@
 {
   "paths": {
-    "/empresas": {
+    "/currents": {
       "get": {
         "deprecated": false,
-        "description": "Find all the empresas's records",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve empresas document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Empresas"
+                    "$ref": "#/components/schemas/Current"
                   }
                 }
               }
@@ -51,7 +51,7 @@
         },
         "summary": "",
         "tags": [
-          "Empresas"
+          "Current"
         ],
         "parameters": [
           {
@@ -194,14 +194,14 @@
       },
       "post": {
         "deprecated": false,
-        "description": "Create a new empresas record",
+        "description": "Create a new record",
         "responses": {
           "200": {
-            "description": "Retrieve empresas document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empresas"
+                  "$ref": "#/components/schemas/Current"
                 }
               }
             }
@@ -239,7 +239,7 @@
         },
         "summary": "",
         "tags": [
-          "Empresas"
+          "Current"
         ],
         "requestBody": {
           "description": "",
@@ -247,20 +247,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewEmpresas"
+                "$ref": "#/components/schemas/NewCurrent"
               }
             }
           }
         }
       }
     },
-    "/empresas/count": {
+    "/currents/count": {
       "get": {
         "deprecated": false,
-        "description": "Retrieve the number of empresas documents",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve empresas document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -306,22 +306,22 @@
         },
         "summary": "",
         "tags": [
-          "Empresas"
+          "Current"
         ],
         "parameters": []
       }
     },
-    "/empresas/{id}": {
+    "/currents/{id}": {
       "get": {
         "deprecated": false,
-        "description": "Find one empresas record",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve empresas document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empresas"
+                  "$ref": "#/components/schemas/Current"
                 }
               }
             }
@@ -359,7 +359,7 @@
         },
         "summary": "",
         "tags": [
-          "Empresas"
+          "Current"
         ],
         "parameters": [
           {
@@ -376,14 +376,14 @@
       },
       "put": {
         "deprecated": false,
-        "description": "Update a single empresas record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve empresas document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empresas"
+                  "$ref": "#/components/schemas/Current"
                 }
               }
             }
@@ -421,7 +421,7 @@
         },
         "summary": "",
         "tags": [
-          "Empresas"
+          "Current"
         ],
         "requestBody": {
           "description": "",
@@ -429,7 +429,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewEmpresas"
+                "$ref": "#/components/schemas/NewCurrent"
               }
             }
           }
@@ -449,10 +449,10 @@
       },
       "delete": {
         "deprecated": false,
-        "description": "Delete a single empresas record",
+        "description": "Delete a record",
         "responses": {
           "200": {
-            "description": "deletes a single empresas based on the ID supplied",
+            "description": "deletes a single record based on the ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -495,7 +495,7 @@
         },
         "summary": "",
         "tags": [
-          "Empresas"
+          "Current"
         ],
         "parameters": [
           {
@@ -514,7 +514,7 @@
   },
   "components": {
     "schemas": {
-      "Empresas": {
+      "Current": {
         "required": [
           "id"
         ],
@@ -522,353 +522,77 @@
           "id": {
             "type": "string"
           },
-          "nombre": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "nombre": {
-                  "type": "string"
-                },
-                "data": {
-                  "type": "object"
-                },
-                "tipo": {
-                  "type": "string"
-                },
-                "status": {
-                  "type": "string"
-                },
-                "inicio": {
-                  "type": "string"
-                },
-                "final": {
-                  "type": "string"
-                },
-                "padre": {
-                  "type": "string"
-                },
+          "users_permissions_user": {
+            "required": [
+              "id",
+              "username",
+              "email"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "resetPasswordToken": {
+                "type": "string"
+              },
+              "confirmationToken": {
+                "type": "string"
+              },
+              "confirmed": {
+                "type": "boolean"
+              },
+              "blocked": {
+                "type": "boolean"
+              },
+              "role": {
+                "type": "string"
+              },
+              "items": {
+                "type": "array",
                 "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "users_permissions_users": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "empresa": {
-                  "type": "string"
-                },
-                "product": {
-                  "type": "string"
-                },
-                "qty": {
-                  "type": "integer"
-                },
-                "assigned": {
-                  "type": "boolean"
-                },
-                "registrable": {
-                  "type": "boolean"
-                },
-                "active": {
-                  "type": "boolean"
-                },
-                "finalizado": {
-                  "type": "boolean"
-                },
-                "documents": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "published_at": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
                   "type": "string"
                 }
-              }
-            }
-          },
-          "users_permissions_users": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id",
-                "username",
-                "email"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "username": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "provider": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
-                },
-                "resetPasswordToken": {
-                  "type": "string"
-                },
-                "confirmationToken": {
-                  "type": "string"
-                },
-                "confirmed": {
-                  "type": "boolean"
-                },
-                "blocked": {
-                  "type": "boolean"
-                },
-                "role": {
-                  "type": "string"
-                },
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "empresa": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "data": {
-                  "type": "object"
-                },
-                "evaluation": {
-                  "type": "object"
-                },
-                "imagen": {
-                  "type": "string"
-                },
-                "current": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "registries": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "observaciones": {
-                  "type": "string"
-                },
-                "data": {
-                  "type": "object"
-                },
-                "inicio": {
-                  "type": "string"
-                },
-                "final": {
-                  "type": "string"
-                },
-                "media": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "validado": {
-                  "type": "string",
-                  "enum": [
-                    "Registrado",
-                    "Supervisado"
-                  ]
-                },
-                "item": {
-                  "type": "string"
-                },
-                "work": {
-                  "type": "string"
-                },
-                "empresa": {
-                  "type": "string"
-                },
-                "users_permissions_user": {
-                  "type": "string"
-                },
-                "published_at": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "statuses": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "valor": {
-                  "type": "string"
-                },
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "empresa": {
-                  "type": "string"
-                },
-                "published_at": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "tipo_items": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "tipo": {
-                  "type": "string"
-                },
-                "data": {
-                  "type": "object"
-                },
-                "empresa": {
-                  "type": "string"
-                },
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "published_at": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "works": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "registries": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "empresa": {
-                  "type": "string"
-                },
-                "data": {
-                  "type": "object"
-                },
-                "father": {
-                  "type": "string"
-                },
-                "childs": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "status": {
-                  "type": "boolean"
-                },
-                "equipment": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "published_at": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
+              },
+              "empresa": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object"
+              },
+              "evaluation": {
+                "type": "object"
+              },
+              "imagen": {
+                "type": "string"
+              },
+              "current": {
+                "type": "string"
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
               }
             }
           },
           "data": {
             "type": "object"
-          },
-          "status": {
-            "type": "boolean"
           },
           "published_at": {
             "type": "string",
@@ -876,52 +600,13 @@
           }
         }
       },
-      "NewEmpresas": {
+      "NewCurrent": {
         "properties": {
-          "nombre": {
+          "users_permissions_user": {
             "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "users_permissions_users": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "registries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "statuses": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "tipo_items": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "works": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "data": {
             "type": "object"
-          },
-          "status": {
-            "type": "boolean"
           },
           "published_at": {
             "type": "string",
@@ -939,7 +624,7 @@
   },
   "tags": [
     {
-      "name": "Empresas"
+      "name": "Current"
     }
   ]
 }

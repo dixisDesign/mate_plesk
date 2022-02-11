@@ -1617,6 +1617,9 @@
                 "imagen": {
                   "type": "string"
                 },
+                "current": {
+                  "type": "string"
+                },
                 "created_by": {
                   "type": "string"
                 },

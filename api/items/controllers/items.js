@@ -375,7 +375,9 @@ module.exports = {
       if (item.padre == null) {
         tree.push(item);
       } else {
-        myMap[item.padre.id].items.push(item);
+        if(myMap[item.padre.id]){
+          myMap[item.padre.id].items.push(item);
+        }
       }
     });
 

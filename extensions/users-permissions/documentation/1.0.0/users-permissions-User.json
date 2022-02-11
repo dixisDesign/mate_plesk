@@ -1472,6 +1472,31 @@
                 "type": "string"
               }
             }
+          },
+          "current": {
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "users_permissions_user": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object"
+              },
+              "published_at": {
+                "type": "string"
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
           }
         }
       },
@@ -1531,6 +1556,9 @@
           },
           "evaluation": {
             "type": "object"
+          },
+          "current": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"

@@ -92,6 +92,10 @@
       "plugin": "upload",
       "required": false,
       "pluginOptions": {}
+    },
+    "current": {
+      "via": "users_permissions_user",
+      "model": "current"
     }
   }
 }

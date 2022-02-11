@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "currents",
+  "info": {
+    "name": "current"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "current"
+    },
+    "data": {
+      "type": "json"
+    }
+  }
+}
