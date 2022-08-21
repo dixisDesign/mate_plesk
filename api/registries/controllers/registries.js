@@ -142,6 +142,7 @@ module.exports = {
     return null;
   },
   async breadCrumb(id) {
+    if(!id || id === null || id === undefined){return null}
     let ids = await this.ascendancyId(id);
     let items = [];
     await Promise.all(
@@ -156,10 +157,11 @@ module.exports = {
   async byDate(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
     let byDate = {dates:{},tiempo:{}};
-    
     await Promise.all(
       registries.map(async (reg) => {
-        reg.item.breadcrumb = await this.breadCrumb(reg.item.id);  
+        console.log(reg.id);
+        if (!reg.inicio){return}
+        reg.item.breadcrumb = await this.breadCrumb(reg.item.id);
         let d = reg.inicio.split("T")[0];
         if (byDate.dates[d]) {
           reg.sumaTiempo = this.registryTime(reg)
@@ -173,12 +175,37 @@ module.exports = {
           byDate.dates[d].push(reg);
         }
       })
-    );    
+    );
+
+    const dates = Object.keys(byDate);
+    return byDate;
+  },
+  async RegistriesByDate(ctx) {
+    let registries = await strapi.services.registries.find(ctx.query);
+    let byDate = {dates:{},tiempo:{}};
+    await Promise.all(
+      registries.map(async (reg) => {
+        if (!reg.inicio){return}
+        let d = reg.inicio.split("T")[0];
+        if (byDate.dates[d]) {
+          reg.sumaTiempo = this.registryTime(reg)
+          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          byDate.dates[d].push(reg);
+        } else {
+          reg.sumaTiempo = this.registryTime(reg)
+          byDate.dates[d] = [];
+          byDate.tiempo[d]= {seconds:0,minutes:0,hours:0,days:0};
+          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          byDate.dates[d].push(reg);
+        }
+      })
+    );
+
     const dates = Object.keys(byDate);
     return byDate;
   },
   sumRegistries(regA,RegB){
-   
+
       let sum = {seconds:0,minutes:0,hours:0,days:0};
       sum.seconds = regA.seconds + RegB.seconds;
       sum.minutes = regA.minutes + RegB.minutes;
@@ -193,7 +220,7 @@ module.exports = {
       registries.map(async (reg) => {
         reg.item.breadcrumb = await this.breadCrumb(reg.item.id);
       })
-    );    
+    );
     return registries
   },
   /**

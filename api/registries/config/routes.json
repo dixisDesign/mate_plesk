@@ -4,16 +4,23 @@
       "method": "GET",
       "path": "/registries/listbyuser/",
       "handler": "registries.listByUser",
-      "config": { 
+      "config": {
         "policies": []
       }
     },
-
+    {
+      "method": "GET",
+      "path": "/registries/estadistics",
+      "handler": "registries.RegistriesByDate",
+      "config": {
+        "policies": []
+      }
+    },
     {
       "method": "GET",
       "path": "/registries/dated",
       "handler": "registries.byDate",
-      "config": { 
+      "config": {
         "policies": []
       }
     },
@@ -21,7 +28,7 @@
       "method": "GET",
       "path": "/registries/lapse",
       "handler": "registries.lapse",
-      "config": { 
+      "config": {
         "policies": []
       }
     },
