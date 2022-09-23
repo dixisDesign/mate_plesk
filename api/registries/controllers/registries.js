@@ -142,13 +142,19 @@ module.exports = {
     return null;
   },
   async breadCrumb(id) {
-    if(!id || id === null || id === undefined){return null}
+    if (!id || id === null || id === undefined) {
+      return null;
+    }
     let ids = await this.ascendancyId(id);
     let items = [];
     await Promise.all(
       ids.map(async (idItem) => {
         let item = await this.getItem(idItem);
-        items.push({ id: item.id, nombre: item.nombre,tipo:{id:item.tipo.id,tipo:item.tipo.tipo}});
+        items.push({
+          id: item.id,
+          nombre: item.nombre,
+          tipo: { id: item.tipo.id, tipo: item.tipo.tipo },
+        });
       })
     );
     return items;
@@ -156,22 +162,30 @@ module.exports = {
 
   async byDate(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
-    let byDate = {dates:{},tiempo:{}};
+    let byDate = { dates: {}, tiempo: {} };
     await Promise.all(
       registries.map(async (reg) => {
         console.log(reg.id);
-        if (!reg.inicio){return}
+        if (!reg.inicio) {
+          return;
+        }
         reg.item.breadcrumb = await this.breadCrumb(reg.item.id);
         let d = reg.inicio.split("T")[0];
         if (byDate.dates[d]) {
-          reg.sumaTiempo = this.registryTime(reg)
-          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          reg.sumaTiempo = this.registryTime(reg);
+          byDate.tiempo[d] = this.sumRegistries(
+            byDate.tiempo[d],
+            reg.sumaTiempo
+          );
           byDate.dates[d].push(reg);
         } else {
-          reg.sumaTiempo = this.registryTime(reg)
+          reg.sumaTiempo = this.registryTime(reg);
           byDate.dates[d] = [];
-          byDate.tiempo[d]= {seconds:0,minutes:0,hours:0,days:0};
-          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          byDate.tiempo[d] = { seconds: 0, minutes: 0, hours: 0, days: 0 };
+          byDate.tiempo[d] = this.sumRegistries(
+            byDate.tiempo[d],
+            reg.sumaTiempo
+          );
           byDate.dates[d].push(reg);
         }
       })
@@ -182,20 +196,28 @@ module.exports = {
   },
   async RegistriesByDate(ctx) {
     let registries = await strapi.services.registries.find(ctx.query);
-    let byDate = {dates:{},tiempo:{}};
+    let byDate = { dates: {}, tiempo: {} };
     await Promise.all(
       registries.map(async (reg) => {
-        if (!reg.inicio){return}
+        if (!reg.inicio) {
+          return;
+        }
         let d = reg.inicio.split("T")[0];
         if (byDate.dates[d]) {
-          reg.sumaTiempo = this.registryTime(reg)
-          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          reg.sumaTiempo = this.registryTime(reg);
+          byDate.tiempo[d] = this.sumRegistries(
+            byDate.tiempo[d],
+            reg.sumaTiempo
+          );
           byDate.dates[d].push(reg);
         } else {
-          reg.sumaTiempo = this.registryTime(reg)
+          reg.sumaTiempo = this.registryTime(reg);
           byDate.dates[d] = [];
-          byDate.tiempo[d]= {seconds:0,minutes:0,hours:0,days:0};
-          byDate.tiempo[d]=this.sumRegistries(byDate.tiempo[d], reg.sumaTiempo);
+          byDate.tiempo[d] = { seconds: 0, minutes: 0, hours: 0, days: 0 };
+          byDate.tiempo[d] = this.sumRegistries(
+            byDate.tiempo[d],
+            reg.sumaTiempo
+          );
           byDate.dates[d].push(reg);
         }
       })
@@ -204,14 +226,13 @@ module.exports = {
     const dates = Object.keys(byDate);
     return byDate;
   },
-  sumRegistries(regA,RegB){
-
-      let sum = {seconds:0,minutes:0,hours:0,days:0};
-      sum.seconds = regA.seconds + RegB.seconds;
-      sum.minutes = regA.minutes + RegB.minutes;
-      sum.hours = regA.hours + RegB.hours;
-      sum.days = regA.days + RegB.days;
-      return sum;
+  sumRegistries(regA, RegB) {
+    let sum = { seconds: 0, minutes: 0, hours: 0, days: 0 };
+    sum.seconds = regA.seconds + RegB.seconds;
+    sum.minutes = regA.minutes + RegB.minutes;
+    sum.hours = regA.hours + RegB.hours;
+    sum.days = regA.days + RegB.days;
+    return sum;
   },
 
   async listByUser(ctx) {
@@ -221,7 +242,7 @@ module.exports = {
         reg.item.breadcrumb = await this.breadCrumb(reg.item.id);
       })
     );
-    return registries
+    return registries;
   },
   /**
    * PRIVATE FUNCTIONS
@@ -238,5 +259,225 @@ module.exports = {
     let days = hours / 24;
     const timer = { days, hours, minutes, seconds };
     return timer;
+  },
+
+  async insertRegistry(ctx) {
+    let registry = ctx.request.body;
+    const regToCheck = {
+      inicio: registry.inicio,
+      final: registry.final,
+      users_permissions_user: this.idOrObject(registry.users_permissions_user),
+      item: this.idOrObject(registry.item),
+      data: registry.data,
+      observaciones: registry.observaciones,
+      validado: registry.validado,
+      work: this.idOrObject(registry.work),
+      empresa: this.idOrObject(registry.empresa),
+      media: registry.media,
+    };
+    return this.checkRegistryRange(regToCheck);
+  },
+
+  async overwriteRegistry(ctx) {
+    let registry = ctx.request.body;
+    const regToCheck = {
+      inicio: registry.inicio,
+      final: registry.final,
+      users_permissions_user: this.idOrObject(registry.users_permissions_user),
+      item: this.idOrObject(registry.item),
+      data: registry.data || null,
+      observaciones: registry.observaciones || null,
+      validado: registry.validado || "Registrado",
+      work: this.idOrObject(registry.work),
+      empresa: this.idOrObject(registry.empresa) || null,
+      media: registry.media || null,
+    };
+    let todo = await this.checkRegistryRange(regToCheck);
+    let result = {};
+    result = await this.getPromiseOverwriteRegistry(todo);
+    return result;
+  },
+
+  async getPromiseOverwriteRegistry(todo) {
+    let result = { post: [], put: [], delete: [] };
+    await Promise.all(
+      todo.post.map(async (reg) => {
+        let newReg = await strapi.services.registries.create(reg);
+        const a = newReg;
+        result["post"].push(a);
+      })
+    );
+
+    await Promise.all(
+      todo.put.map(async (reg) => {
+        let newReg = await strapi.services.registries.update(
+          { id: reg.id },
+          reg
+        );
+        const a = newReg;
+        result["put"].push(a);
+      })
+    );
+
+    await Promise.all(
+      todo.delete.map(async (reg) => {
+        let newReg = await strapi.services.registries.delete({ id: reg.id });
+        const a = newReg;
+        result["delete"].push(a);
+      })
+    );
+    return result;
+  },
+
+  idOrObject(element) {
+    if (element?.id) {
+      return element.id;
+    }
+    return element;
+  },
+  async checkRegistryRange(data) {
+    //const data = ctx.request.body;
+    const inicio = data.inicio;
+    const final = data.final;
+    const users_permissions_user = data.users_permissions_user
+      ? data.users_permissions_user
+      : "";
+
+    if (inicio > final) {
+      return { error: "inicio mayor que final" };
+    }
+
+    const filter = {
+      inicio_gte: inicio.substring(0, 10) + "T00:00:00Z",
+      inicio_lte: final.substring(0, 10) + "T23:59:00Z",
+      users_permissions_user,
+    };
+    const filter2 = {
+      final_gte: inicio.substring(0, 10) + "T00:00:00Z",
+      final_lte: final.substring(0, 10) + "T23:59:00Z",
+      users_permissions_user,
+    };
+    //console.log(filter, filter2);
+    let registries = await strapi.services.registries.find(filter);
+    let registries2 = await strapi.services.registries.find(filter2);
+    const junts = await Promise.all(
+      registries2.map((reg) => {
+        if (!registries.find((reg2) => reg2.id === reg.id)) {
+          registries.push(reg);
+        }
+      })
+    );
+    let r = {};
+    r.put = [];
+    r.delete = [];
+    r.post = [data];
+
+    registries.map(async (original) => {
+      console.log(
+        "######################################################################"
+      );
+      console.debug("ID", original.id);
+      console.log("Original.inicio", original.inicio.slice(0, 16));
+      console.log("data.inicio", data.inicio.slice(0, 16));
+      console.warn("Original.final", original.final.slice(0, 16));
+      console.warn("data.final", data.final.slice(0, 16));
+
+      console.log(
+        "######################################################################"
+      );
+      /*   console.log(data); */
+
+      if (
+        original.inicio.slice(0, 16) == data.inicio.slice(0, 16) &&
+        original.final.slice(0, 16) == data.final.slice(0, 16)
+      ) {
+        console.log("reset post");
+        r.post = [];
+      } else {
+        let a = await this.compareRegistries(original, data);
+        //console.log(a);
+
+        if (a.put.length > 0) {
+          r.put.push(a.put[0]);
+        }
+        if (a.post) {
+          r.post.push(a.post);
+        }
+        if (a.delete) {
+          r.delete.push(a.delete[0]);
+        }
+      }
+    });
+
+    return r;
+  },
+
+  async compareRegistries(original, nuevo) {
+    let result = { put: [] };
+    // AL FINAL PISANDO
+    if (
+      original.inicio < nuevo.inicio &&
+      original.final >= nuevo.inicio &&
+      original.final <= nuevo.final
+    ) {
+      result.put = [
+        {
+          inicio: original.inicio,
+          final: nuevo.inicio,
+          id: original.id,
+          item: original.item.id,
+          work: original.work.id,
+          users_permissions_user: original.users_permissions_user.id,
+        },
+      ];
+    }
+    //INTERMEDIO
+    else if (original.inicio < nuevo.inicio && original.final > nuevo.final) {
+      let originalPart;
+      originalPart = {
+        inicio: nuevo.final,
+        final: original.final,
+        item: original.item.id,
+        work: original.work.id,
+        users_permissions_user: original.users_permissions_user.id,
+        observaciones: original.observaciones,
+        media: original.media,
+        empresa: original.empresa.id,
+      };
+
+      result.post = originalPart;
+
+      result.put = [
+        {
+          inicio: original.inicio,
+          final: nuevo.inicio,
+          item: original.item.id,
+          work: original.work.id,
+          id: original.id,
+        },
+      ];
+    }
+    //AL INICIO PISANDO
+    else if (
+      original.inicio < nuevo.final &&
+      original.inicio > nuevo.inicio &&
+      original.final > nuevo.final
+    ) {
+      result.put = [
+        {
+          inicio: nuevo.final,
+          final: original.final,
+          id: original.id,
+          item: original.item.id,
+          work: original.work.id,
+          users_permissions_user: original.users_permissions_user.id,
+        },
+      ];
+    }
+    //SOBRE_ESCRIBE
+    else if (nuevo.inicio < original.inicio && nuevo.final > original.final) {
+      result.delete = [original];
+    }
+    return result;
   },
 };

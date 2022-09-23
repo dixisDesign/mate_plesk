@@ -81,6 +81,22 @@
       }
     },
     {
+      "method": "POST",
+      "path": "/registries/insert",
+      "handler": "registries.insertRegistry",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/registries/overwrite",
+      "handler": "registries.overwriteRegistry",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "PUT",
       "path": "/registries/:id",
       "handler": "registries.update",

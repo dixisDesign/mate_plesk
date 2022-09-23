@@ -15,7 +15,8 @@ module.exports = {
    * Simple example.
    * Every monday at 1am.
    */
-  // '0 1 * * 1': () => {
-  //
-  // }
-};
+  /**  '* * * * * *': () => {
+  *  console.log('Cron job running hourly');
+  * }
+  */
+ };
