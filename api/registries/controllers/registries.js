@@ -330,7 +330,7 @@ module.exports = {
   },
 
   idOrObject(element) {
-    if (element?.id) {
+    if (element && element.id) {
       return element.id;
     }
     return element;
