@@ -460,7 +460,7 @@ module.exports = {
     //AL INICIO PISANDO
     else if (
       original.inicio < nuevo.final &&
-      original.inicio > nuevo.inicio &&
+      original.inicio >= nuevo.inicio &&
       original.final > nuevo.final
     ) {
       result.put = [
