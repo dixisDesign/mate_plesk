@@ -371,7 +371,7 @@ module.exports = {
     r.put = [];
     r.delete = [];
     r.post = [data];
-
+    let equalStartStop = false;
     registries.map(async (original) => {
       console.log(
         "######################################################################"
@@ -391,8 +391,13 @@ module.exports = {
         original.inicio.slice(0, 16) == data.inicio.slice(0, 16) &&
         original.final.slice(0, 16) == data.final.slice(0, 16)
       ) {
+        equalStartStop = true;
+      }
+      if(equalStartStop){
         console.log("reset post");
         r.post = [];
+        r.put = [];
+        r.delete = [];
       } else {
         let a = await this.compareRegistries(original, data);
         //console.log(a);
