@@ -20,7 +20,7 @@ module.exports = {
   * }
   */
  // cron task evrery mon to fri at 15:00
-   '0 0 15 * * 1-5': async () => {
+   '0 0 16 * * 1-5': async () => {
     //run registries service closeAllCurrent
     await strapi.controllers.registries.closeAllCurrent();
   }, 
