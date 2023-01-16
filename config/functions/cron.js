@@ -19,4 +19,20 @@ module.exports = {
   *  console.log('Cron job running hourly');
   * }
   */
+ // cron task evrery mon to fri at 15:00
+   '0 0 15 * * 1-5': async () => {
+    //run registries service closeAllCurrent
+    await strapi.controllers.registries.closeAllCurrent();
+  }, 
+  //cron task every 1 minute registries service closeAllCurrent
+  /* '0,10,20,30,40,50 * * * * *': async() => { 
+    console.log('Cron job running every minute');
+    await console.log(
+      strapi.controllers.registries.getNowDate()
+
+    ); 
+  }  */
+
+
+
  };

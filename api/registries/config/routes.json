@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/registries/close-all/",
+      "handler": "registries.closeAllCurrents",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/registries/estadistics",
       "handler": "registries.RegistriesByDate",
       "config": {
@@ -72,6 +80,7 @@
         "policies": []
       }
     },
+    
     {
       "method": "POST",
       "path": "/registries",

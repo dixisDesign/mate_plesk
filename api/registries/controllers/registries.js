@@ -393,7 +393,7 @@ module.exports = {
       ) {
         equalStartStop = true;
       }
-      if(equalStartStop){
+      if (equalStartStop) {
         console.log("reset post");
         r.post = [];
         r.put = [];
@@ -484,5 +484,40 @@ module.exports = {
       result.delete = [original];
     }
     return result;
+  },
+
+  getNowDate() {
+    return new Date().toISOString();
+  },
+
+  async closeAllCurrents() {
+    let result = [];
+    let users = await this.findUserCurrentActive();
+
+    await Promise.all(
+      users.map(async (user) => {
+        let current = await this.registerCurrent(user);
+        result.push(await strapi.services.registries.create(current));
+        await strapi.plugins["users-permissions"].services.user.edit(
+          { id: user.id },
+          { data: { current: {} } }
+        );
+      })
+    );
+    console.log("cron run ed");
+    return result;
+  },
+
+  async registerCurrent(user) {
+    let current = user.data.current;
+    current.final = this.getNowDate();
+    return current;
+  },
+
+  async findUserCurrentActive() {
+    const users = await strapi.plugins[
+      "users-permissions"
+    ].services.user.fetchAll();
+    return await users.filter((user) => user.data.current.item);
   },
 };
