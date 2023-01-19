@@ -12,9 +12,9 @@
   "pluginOptions": {},
   "attributes": {
     "users_permissions_user": {
+      "via": "current",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "current"
+      "model": "user"
     },
     "data": {
       "type": "json"

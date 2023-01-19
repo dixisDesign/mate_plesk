@@ -489,11 +489,32 @@ module.exports = {
   getNowDate() {
     return new Date().toISOString();
   },
+  async registerCurrent(user) {
+   let current = user.data.current;
+   current.final = this.getNowDate();
+    return current;
+  },
+  
+  async closeCurrent(ctx){
+    const id = ctx.params.id;
+    const user = await strapi.query("user", "users-permissions").findOne({id});
+    if( user.data.current && user.data.current.item){
+      const current = await this.registerCurrent(user);
+      const registry = await strapi.services.registries.create(current);
+      const newUser = await strapi.plugins["users-permissions"].services.user.edit(
+        { id: user.id },
+        { data: { current: {} } }
+        );  
+        return {user:newUser, registry}; 
+      }
+      return {user, registry: {}}
+
+  },
+  
 
   async closeAllCurrents() {
     let result = [];
     let users = await this.findUserCurrentActive();
-
     await Promise.all(
       users.map(async (user) => {
         let current = await this.registerCurrent(user);
@@ -504,15 +525,10 @@ module.exports = {
         );
       })
     );
-    console.log("cron run ed");
     return result;
   },
 
-  async registerCurrent(user) {
-    let current = user.data.current;
-    current.final = this.getNowDate();
-    return current;
-  },
+
 
   async findUserCurrentActive() {
     const users = await strapi.plugins[

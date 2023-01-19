@@ -96,6 +96,9 @@
     "current": {
       "via": "users_permissions_user",
       "model": "current"
+    },
+    "notifications": {
+      "type": "json"
     }
   }
 }

@@ -583,6 +583,9 @@
               "current": {
                 "type": "string"
               },
+              "notifications": {
+                "type": "object"
+              },
               "created_by": {
                 "type": "string"
               },

@@ -586,7 +586,10 @@
             "type": "array",
             "items": {
               "required": [
-                "id"
+                "id",
+                "inicio",
+                "final",
+                "validado"
               ],
               "properties": {
                 "id": {

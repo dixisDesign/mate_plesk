@@ -114,6 +114,74 @@
         "parameters": []
       }
     },
+    "/registries/close-current/{id}": {
+      "get": {
+        "deprecated": false,
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Retrieve registries document(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Registries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
     "/registries/estadistics": {
       "get": {
         "deprecated": false,
@@ -1068,7 +1136,10 @@
     "schemas": {
       "Registries": {
         "required": [
-          "id"
+          "id",
+          "inicio",
+          "final",
+          "validado"
         ],
         "properties": {
           "id": {
@@ -1421,6 +1492,9 @@
               "current": {
                 "type": "string"
               },
+              "notifications": {
+                "type": "object"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -1436,6 +1510,11 @@
         }
       },
       "NewRegistries": {
+        "required": [
+          "inicio",
+          "final",
+          "validado"
+        ],
         "properties": {
           "observaciones": {
             "type": "string"

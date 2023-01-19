@@ -18,6 +18,14 @@
     },
     {
       "method": "GET",
+      "path": "/registries/close-current/:id",
+      "handler": "registries.closeCurrent",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/registries/estadistics",
       "handler": "registries.RegistriesByDate",
       "config": {

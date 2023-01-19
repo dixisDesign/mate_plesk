@@ -23,10 +23,12 @@
       "type": "json"
     },
     "inicio": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": true
     },
     "final": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": true
     },
     "media": {
       "collection": "file",
@@ -45,7 +47,8 @@
       "enum": [
         "Registrado",
         "Supervisado"
-      ]
+      ],
+      "required": true
     },
     "item": {
       "model": "items"
