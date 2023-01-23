@@ -511,7 +511,6 @@ module.exports = {
 
   },
   
-
   async closeAllCurrents() {
     let result = [];
     let users = await this.findUserCurrentActive();
@@ -527,8 +526,6 @@ module.exports = {
     );
     return result;
   },
-
-
 
   async findUserCurrentActive() {
     const users = await strapi.plugins[
