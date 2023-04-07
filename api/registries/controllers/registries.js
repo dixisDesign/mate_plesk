@@ -494,6 +494,26 @@ module.exports = {
    current.final = this.getNowDate();
     return current;
   },
+  async openCurrent(ctx){
+   const id = ctx.request.body.users_permissions_user.id;
+    const user = await strapi.query("user", "users-permissions").findOne({id});
+    if( user.data && user.data.current && user.data.current.item){
+      return {error: "Ya hay un registro abierto"}
+    }
+    const current = {
+      inicio: this.getNowDate(),
+      item: ctx.request.body.item,
+      work: ctx.request.body.work,
+      users_permissions_user: ctx.request.body.users_permissions_user,
+      validado: "Registrado" 
+    };
+    const newUser = await strapi.plugins["users-permissions"].services.user.edit(
+      { id: user.id },
+      { data: { current } }
+      );  
+      return {user:newUser, current}; 
+
+  },
   
   async closeCurrent(ctx){
     const id = ctx.params.id;

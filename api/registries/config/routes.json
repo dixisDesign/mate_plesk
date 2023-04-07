@@ -9,7 +9,7 @@
       }
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/registries/close-all/",
       "handler": "registries.closeAllCurrents",
       "config": {
@@ -17,7 +17,7 @@
       }
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/registries/close-current/:id",
       "handler": "registries.closeCurrent",
       "config": {
@@ -84,6 +84,14 @@
       "method": "GET",
       "path": "/registries/:id",
       "handler": "registries.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/registries/open-current/",
+      "handler": "registries.openCurrent",
       "config": {
         "policies": []
       }
