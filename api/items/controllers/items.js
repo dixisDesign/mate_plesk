@@ -675,7 +675,7 @@ async fox(ctx){
   let items = await strapi.services.items.find(ctx.query);
   // filter id, nombre, padre in items
   let itemsFiltered = items.map((item) => {
-    return { id: item.id, nombre: item.nombre, padre: item.padre?.id || null, data: item.data};
+    return { id: item.id, nombre: item.nombre, padre: item.padre.id || null, data: item.data};
   });
   return itemsFiltered;
 }
