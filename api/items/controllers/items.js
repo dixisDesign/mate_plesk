@@ -684,10 +684,11 @@ async textItems(ctx){
   let text = "|";
   // pass some fields of items to text
   items.forEach((item) => {
+    let codigo = item.data && item.data.codigo ? item.data.codigo : "";
     text = 
     text 
     + item.id + "|"
-    + item.data?.codigo + "|"
+    + codigo + "|"
     + item.nombre + "|"
     +"activo:"+item.active + "|"
     +"finalizado:"+item.finalizado + "|"
