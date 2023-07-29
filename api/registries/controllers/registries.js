@@ -560,6 +560,8 @@ module.exports = {
     // pass some fields of registries to text
     let text = "";
     registries.forEach(reg => {
+      let itemCodigo = reg.item.data && reg.item.data.codigo ? reg.item.data.codigo : "";
+
       text = 
       text + "|"
       + reg.id + "|"
@@ -569,6 +571,8 @@ module.exports = {
       + reg.final + "|" 
       + reg.item.id + "|" 
       + reg.item.nombre + "|" 
+      + itemCodigo + "|" 
+
       + reg.work.name +"|" 
       + reg.validado + "| \n"; 
     }
