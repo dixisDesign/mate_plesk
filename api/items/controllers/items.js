@@ -696,7 +696,7 @@ async textItems(ctx){
     
   });
   return text;
-  return items;
+  
   
 
 },
