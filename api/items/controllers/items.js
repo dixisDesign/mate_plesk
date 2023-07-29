@@ -685,6 +685,8 @@ async textItems(ctx){
   // pass some fields of items to text
   items.forEach((item) => {
     let codigo = item.data && item.data.codigo ? item.data.codigo : "";
+    let padre = item.padre && item.padre.nombre ? item.padre.nombre : "";
+    let padreId = item.padre && item.padre.id ? item.padre.id : "";
     text = 
     text 
     + item.id + "|"
@@ -692,8 +694,8 @@ async textItems(ctx){
     + item.nombre + "|"
     +"activo:"+item.active + "|"
     +"finalizado:"+item.finalizado + "|"
-    + item.padre?.nombre  + "|"
-    + item.padre?.id  + "|\n"
+    + padre  + "|"
+    + padreId  + "|\n"
     
   });
   return text;
