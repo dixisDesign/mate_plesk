@@ -9,6 +9,14 @@
       }
     },
     {
+      "method": "GET",
+      "path": "/registries/text/",
+      "handler": "registries.textRegistries",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "POST",
       "path": "/registries/close-all/",
       "handler": "registries.closeAllCurrents",

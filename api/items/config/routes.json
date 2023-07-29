@@ -18,6 +18,14 @@
     },
     {
       "method": "GET",
+      "path": "/items/text/",
+      "handler": "items.textItems",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/items/child-lapse/:id",
       "handler": "items.childLapse",
       "config": {

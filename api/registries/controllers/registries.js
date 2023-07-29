@@ -553,4 +553,26 @@ module.exports = {
     ].services.user.fetchAll();
     return await users.filter((user) => user.data.current.item);
   },
+  async textRegistries(ctx){
+    //get all registries query
+    let registries = await strapi.services.registries.find(ctx.query);
+    console.log(registries);
+    // pass some fields of registries to text
+    let text = "";
+    registries.forEach(reg => {
+      text = 
+      text + "|"
+      + reg.id + "|"
+      + reg.users_permissions_user.id + "|"
+      + reg.users_permissions_user.name + "|" 
+      + reg.inicio + "|" 
+      + reg.final + "|" 
+      + reg.item.id + "|" 
+      + reg.item.nombre + "|" 
+      + reg.work.name +"|" 
+      + reg.validado + "| \n"; 
+    }
+    );
+    return text;
+  }
 };

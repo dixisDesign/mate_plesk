@@ -678,6 +678,27 @@ async fox(ctx){
     return { id: item.id, nombre: item.nombre, padre: item.padre, data: item.data};
   });
   return itemsFiltered;
-}
+},
+async textItems(ctx){
+  let items = await strapi.services.items.find(ctx.query);
+  let text = "|";
+  // pass some fields of items to text
+  items.forEach((item) => {
+    text = 
+    text 
+    + item.id + "|"
+    + item.data?.codigo + "|"
+    + item.nombre + "|"
+    +"activo:"+item.active + "|"
+    +"finalizado:"+item.finalizado + "|"
+    + item.padre?.nombre  + "|"
+    + item.padre?.id  + "|\n"
+    
+  });
+  return text;
+  return items;
+  
+
+},
 
 };
