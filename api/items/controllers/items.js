@@ -694,7 +694,6 @@ async textItems(ctx){
     + item.nombre + "|"
     +"activo:"+item.active + "|"
     +"finalizado:"+item.finalizado + "|"
-    + padre  + "|"
     + padreId  + "|\n"
     
   });
