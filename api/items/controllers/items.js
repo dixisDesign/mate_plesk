@@ -681,7 +681,7 @@ async fox(ctx){
 },
 async textItems(ctx){
   let items = await strapi.services.items.find(ctx.query);
-  let text = "|";
+  let text = '';
   // pass some fields of items to text
   items.forEach((item) => {
     let codigo = item.data && item.data.codigo ? item.data.codigo : "";
@@ -689,7 +689,7 @@ async textItems(ctx){
     let padreId = item.padre && item.padre.id ? item.padre.id : "";
     text = 
     text 
-    + item.id + "|"
+    + "|" +item.id + "|"
     + codigo + "|"
     + item.nombre + "|"
     +"activo:"+item.active + "|"

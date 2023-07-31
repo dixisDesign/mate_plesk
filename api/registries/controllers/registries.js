@@ -572,7 +572,6 @@ module.exports = {
       + reg.item.id + "|" 
       + reg.item.nombre + "|" 
       + itemCodigo + "|" 
-
       + reg.work.name +"|" 
       + reg.validado + "| \n"; 
     }
