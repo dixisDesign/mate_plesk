@@ -663,6 +663,9 @@
                   "type": "string"
                 }
               },
+              "codigo": {
+                "type": "string"
+              },
               "published_at": {
                 "type": "string"
               },

@@ -99,6 +99,9 @@
     },
     "notifications": {
       "type": "json"
+    },
+    "idLince": {
+      "type": "integer"
     }
   }
 }

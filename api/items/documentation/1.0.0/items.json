@@ -1578,6 +1578,9 @@
                   "type": "string"
                 }
               },
+              "codigo": {
+                "type": "string"
+              },
               "published_at": {
                 "type": "string"
               },
@@ -1659,6 +1662,9 @@
                     "type": "string"
                   }
                 },
+                "codigo": {
+                  "type": "string"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -1736,6 +1742,9 @@
                 },
                 "notifications": {
                   "type": "object"
+                },
+                "idLince": {
+                  "type": "integer"
                 },
                 "created_by": {
                   "type": "string"
@@ -1915,6 +1924,9 @@
               }
             }
           },
+          "codigo": {
+            "type": "string"
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
@@ -1985,6 +1997,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "codigo": {
+            "type": "string"
           },
           "published_at": {
             "type": "string",

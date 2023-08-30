@@ -588,6 +588,9 @@
                 "notifications": {
                   "type": "object"
                 },
+                "idLince": {
+                  "type": "integer"
+                },
                 "created_by": {
                   "type": "string"
                 },

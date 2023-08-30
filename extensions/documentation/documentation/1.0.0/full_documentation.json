@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "07/29/2023 1:04:19 PM"
+    "x-generation-date": "08/30/2023 1:04:29 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -9272,6 +9272,9 @@
               "notifications": {
                 "type": "object"
               },
+              "idLince": {
+                "type": "integer"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -9458,6 +9461,9 @@
                   "type": "string"
                 }
               },
+              "codigo": {
+                "type": "string"
+              },
               "published_at": {
                 "type": "string"
               },
@@ -9576,6 +9582,9 @@
                     "type": "string"
                   }
                 },
+                "codigo": {
+                  "type": "string"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -9653,6 +9662,9 @@
                 },
                 "notifications": {
                   "type": "object"
+                },
+                "idLince": {
+                  "type": "integer"
                 },
                 "created_by": {
                   "type": "string"
@@ -10184,6 +10196,9 @@
                   "type": "string"
                 }
               },
+              "codigo": {
+                "type": "string"
+              },
               "published_at": {
                 "type": "string"
               },
@@ -10265,6 +10280,9 @@
                     "type": "string"
                   }
                 },
+                "codigo": {
+                  "type": "string"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -10342,6 +10360,9 @@
                 },
                 "notifications": {
                   "type": "object"
+                },
+                "idLince": {
+                  "type": "integer"
                 },
                 "created_by": {
                   "type": "string"
@@ -10521,6 +10542,9 @@
               }
             }
           },
+          "codigo": {
+            "type": "string"
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
@@ -10591,6 +10615,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "codigo": {
+            "type": "string"
           },
           "published_at": {
             "type": "string",
@@ -10702,6 +10729,9 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "codigo": {
+                  "type": "string"
                 },
                 "published_at": {
                   "type": "string"
@@ -11054,6 +11084,9 @@
                   "type": "string"
                 }
               },
+              "codigo": {
+                "type": "string"
+              },
               "published_at": {
                 "type": "string"
               },
@@ -11245,6 +11278,9 @@
               "notifications": {
                 "type": "object"
               },
+              "idLince": {
+                "type": "integer"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -11391,6 +11427,9 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "codigo": {
+                  "type": "string"
                 },
                 "published_at": {
                   "type": "string"
@@ -11647,6 +11686,9 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "codigo": {
+                  "type": "string"
                 },
                 "published_at": {
                   "type": "string"
@@ -12163,6 +12205,9 @@
                 "notifications": {
                   "type": "object"
                 },
+                "idLince": {
+                  "type": "integer"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -12346,6 +12391,9 @@
                     "type": "string"
                   }
                 },
+                "codigo": {
+                  "type": "string"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -12525,6 +12573,9 @@
           },
           "notifications": {
             "type": "object"
+          },
+          "idLince": {
+            "type": "integer"
           }
         }
       },
@@ -12590,6 +12641,9 @@
           },
           "notifications": {
             "type": "object"
+          },
+          "idLince": {
+            "type": "integer"
           },
           "created_by": {
             "type": "string"

@@ -520,6 +520,7 @@ module.exports = {
     const user = await strapi.query("user", "users-permissions").findOne({id});
     if( user.data.current && user.data.current.item){
       const current = await this.registerCurrent(user);
+      console.log(current);
       const registry = await strapi.services.registries.create(current);
       const newUser = await strapi.plugins["users-permissions"].services.user.edit(
         { id: user.id },

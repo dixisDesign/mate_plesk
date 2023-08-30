@@ -79,6 +79,9 @@
     "documents": {
       "via": "item",
       "collection": "documents"
+    },
+    "codigo": {
+      "type": "string"
     }
   }
 }

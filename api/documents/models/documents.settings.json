@@ -27,8 +27,8 @@
       "pluginOptions": {}
     },
     "item": {
-      "model": "items",
-      "via": "documents"
+      "via": "documents",
+      "model": "items"
     }
   }
 }
