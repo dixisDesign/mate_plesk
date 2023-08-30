@@ -490,48 +490,49 @@ module.exports = {
     return new Date().toISOString();
   },
   async registerCurrent(user) {
-   let current = user.data.current;
-   current.final = this.getNowDate();
+    let current = user.data.current;
+    current.final = this.getNowDate();
     return current;
   },
-  async openCurrent(ctx){
-   const id = ctx.request.body.users_permissions_user.id;
-    const user = await strapi.query("user", "users-permissions").findOne({id});
-    if( user.data && user.data.current && user.data.current.item){
-      return {error: "Ya hay un registro abierto"}
+
+  async openCurrent(ctx) {
+    const id = ctx.request.body.users_permissions_user.id;
+    const user = await strapi
+      .query("user", "users-permissions")
+      .findOne({ id });
+    if (user.data && user.data.current && user.data.current.item) {
+      return { error: "Ya hay un registro abierto" };
     }
     const current = {
       inicio: this.getNowDate(),
       item: ctx.request.body.item,
       work: ctx.request.body.work,
       users_permissions_user: ctx.request.body.users_permissions_user,
-      validado: "Registrado" 
+      validado: "Registrado",
     };
-    const newUser = await strapi.plugins["users-permissions"].services.user.edit(
-      { id: user.id },
-      { data: { current } }
-      );  
-      return {user:newUser, current}; 
-
+    const newUser = await strapi.plugins[
+      "users-permissions"
+    ].services.user.edit({ id: user.id }, { data: { current } });
+    return { user: newUser, current };
   },
-  
-  async closeCurrent(ctx){
+
+  async closeCurrent(ctx) {
     const id = ctx.params.id;
-    const user = await strapi.query("user", "users-permissions").findOne({id});
-    if( user.data.current && user.data.current.item){
+    const user = await strapi
+      .query("user", "users-permissions")
+      .findOne({ id });
+    if (user.data.current && user.data.current.item) {
       const current = await this.registerCurrent(user);
       console.log(current);
       const registry = await strapi.services.registries.create(current);
-      const newUser = await strapi.plugins["users-permissions"].services.user.edit(
-        { id: user.id },
-        { data: { current: {} } }
-        );  
-        return {user:newUser, registry}; 
-      }
-      return {user, registry: {}}
-
+      const newUser = await strapi.plugins[
+        "users-permissions"
+      ].services.user.edit({ id: user.id }, { data: { current: {} } });
+      return { user: newUser, registry };
+    }
+    return { user, registry: {} };
   },
-  
+
   async closeAllCurrents() {
     let result = [];
     let users = await this.findUserCurrentActive();
@@ -554,29 +555,42 @@ module.exports = {
     ].services.user.fetchAll();
     return await users.filter((user) => user.data.current.item);
   },
-  async textRegistries(ctx){
+  async textRegistries(ctx) {
     //get all registries query
     let registries = await strapi.services.registries.find(ctx.query);
     console.log(registries);
     // pass some fields of registries to text
     let text = "";
-    registries.forEach(reg => {
-      let itemCodigo = reg.item.data && reg.item.data.codigo ? reg.item.data.codigo : "";
+    registries.forEach((reg) => {
+      let itemCodigo =
+        reg.item.data && reg.item.data.codigo ? reg.item.data.codigo : "";
 
-      text = 
-      text + "|"
-      + reg.id + "|"
-      + reg.users_permissions_user.id + "|"
-      + reg.users_permissions_user.name + "|" 
-      + reg.inicio + "|" 
-      + reg.final + "|" 
-      + reg.item.id + "|" 
-      + reg.item.nombre + "|" 
-      + itemCodigo + "|" 
-      + reg.work.name +"|" 
-      + reg.validado + "| \n"; 
-    }
-    );
+      text =
+        text +
+        "|" +
+        reg.id +
+        "|" +
+        reg.users_permissions_user.idLince +
+        "|" +
+        reg.users_permissions_user.id +
+        "|" +
+        reg.users_permissions_user.name +
+        "|" +
+        reg.inicio +
+        "|" +
+        reg.final +
+        "|" +
+        reg.item.id +
+        "|" +
+        reg.item.nombre +
+        "|" +
+        itemCodigo +
+        "|" +
+        reg.work.name +
+        "|" +
+        reg.validado +
+        "| \n";
+    });
     return text;
-  }
+  },
 };
