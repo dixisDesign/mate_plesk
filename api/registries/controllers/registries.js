@@ -570,8 +570,6 @@ module.exports = {
         "|" +
         reg.id +
         "|" +
-        reg.users_permissions_user.idLince +
-        "|" +
         reg.users_permissions_user.id +
         "|" +
         reg.users_permissions_user.name +
@@ -589,6 +587,8 @@ module.exports = {
         reg.work.name +
         "|" +
         reg.validado +
+        "|" +
+        reg.users_permissions_user.idLince +
         "| \n";
     });
     return text;
